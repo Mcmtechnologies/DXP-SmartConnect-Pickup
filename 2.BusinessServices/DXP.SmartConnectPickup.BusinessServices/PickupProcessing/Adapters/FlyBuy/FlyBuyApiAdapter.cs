@@ -17,7 +17,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
         }
 
         /// <summary>
-        /// Get Customer Async.
+        /// Gets Customer Async.
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="correlationId">The correlationId.</param>
@@ -28,7 +28,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
         }
 
         /// <summary>
-        /// Get Customer Async.
+        /// Gets Customer Async.
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="correlationId">The correlationId.</param>
@@ -54,7 +54,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
         }
 
         /// <summary>
-        /// Create Customer Async.
+        /// Creates Customer Async.
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="correlationId">The correlationId.</param>
@@ -65,7 +65,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
         }
 
         /// <summary>
-        /// Create Customer Async.
+        /// Creates Customer Async.
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="correlationId">The correlationId.</param>

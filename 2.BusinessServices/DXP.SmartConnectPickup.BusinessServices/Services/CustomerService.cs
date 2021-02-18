@@ -46,16 +46,16 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         }
 
         /// <summary>
-        /// Get Customer By User Id.
+        /// Gets Customer By User Id.
         /// </summary>
         /// <param name="userId">The userId.</param>
-        /// <param name="IsForce">The isForce.</param>
+        /// <param name="isViaMerchant">The isViaMerchant.</param>
         /// <returns>Task{BaseResponseObject}.</returns>
-        public async Task<BaseResponseObject> GetCustomerByUserId(string userId, bool IsForce = false)
+        public async Task<BaseResponseObject> GetCustomerByUserId(string userId, bool isViaMerchant = false)
         {
             Customer customer = await _customerRepository.GetCustomerByUserIdAndProviderAsync(userId, _merchantAccountSettings.PickupProviderDefault);
 
-            if (customer != null && !string.IsNullOrEmpty(customer.ExternalId) && IsForce)
+            if (customer != null && !string.IsNullOrEmpty(customer.ExternalId) && isViaMerchant)
             {
                 // Builds pickup adapter
                 IPickupTarget pickupTarget = BuildPickupAdapter(_merchantAccountSettings.PickupProviderDefault);
@@ -81,7 +81,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         }
 
         /// <summary>
-        /// Create Customer Async.
+        /// Creates a Customer Async.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>Task{BaseResponseObject}.</returns>
@@ -117,7 +117,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         }
 
         /// <summary>
-        /// Update Customer Async.
+        /// Update a Customer Async.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>Task{BaseResponseObject}.</returns>
@@ -144,7 +144,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         }
 
         /// <summary>
-        /// Retry Update Customer Merchant Async.
+        /// Retry Update a Customer Merchant Async.
         /// </summary>
         /// <param name="token">The token.</param>
         /// <param name="userId">The userId.</param>
@@ -186,7 +186,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         {
             Guard.AgainstInvalidArgument(nameof(token), token == _merchantAccountSettings.TokenRetry);
 
-            _ = length > _merchantAccountSettings.MaxNumberCustomerRetry ? _merchantAccountSettings.MaxNumberCustomerRetry : length;
+            length = length > _merchantAccountSettings.MaxNumberCustomerRetry ? _merchantAccountSettings.MaxNumberCustomerRetry : length;
 
             IEnumerable<Customer> customers = await _customerRepository
                 .GetCustomerNotSyncByProviderAsync(_merchantAccountSettings.PickupProviderDefault, length, skipIndex);

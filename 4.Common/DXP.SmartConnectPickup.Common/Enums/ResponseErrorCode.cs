@@ -12,7 +12,7 @@
         NotFoundException = 7,
         InvalidOperationException = 8,
         AuthenticationException = 9,
-        PaymentProviderFailed = 10,
+        PickupProviderFailed = 10,
         ArgumentNotValid = 11
     }
 }

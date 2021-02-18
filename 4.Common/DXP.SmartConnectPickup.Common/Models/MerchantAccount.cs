@@ -12,7 +12,7 @@ namespace DXP.SmartConnectPickup.Common.Models
         {
             MerchantAccountType = MerchantAccountType.Unknown;
 
-            if (paymentProvider.Equals(PaymentProviderConstants.FlyBuy, StringComparison.OrdinalIgnoreCase))
+            if (paymentProvider.Equals(PickupProviderConstants.FlyBuy, StringComparison.OrdinalIgnoreCase))
             {
                 MerchantAccountType = MerchantAccountType.FlyBuy;
             }

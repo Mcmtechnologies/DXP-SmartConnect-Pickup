@@ -44,42 +44,5 @@ namespace DXP.SmartConnectPickup.API.Controllers
                 Branch = _configuration.Branch
             };
         }
-
-        /// <summary>
-        /// Gets upc12 from upc11.
-        /// </summary>
-        /// <param name="upc11">The upc11.</param>
-        /// <returns>System.String.</returns>
-        [Route("GetUpc12")]
-        [HttpGet]
-        public string GetUpc12(string upc11)
-        {
-            return BarCodeUtils.GetUpc12(upc11);
-        }
-
-        /// <summary>
-        /// Gets upc13 from upc12.
-        /// </summary>
-        /// <param name="upc12">The upc12.</param>
-        /// <returns>System.String.</returns>
-        [Route("GetUpc13")]
-        [HttpGet]
-        public string GetUpc13(string upc12)
-        {
-            return BarCodeUtils.GetUpc13(upc12);
-        }
-
-        /// <summary>
-        /// Gets barcode.
-        /// </summary>
-        /// <param name="upc">The upc.</param>
-        /// <param name="finalRetailPrice">The finalRetailPrice.</param>
-        /// <returns>System.String.</returns>
-        [Route("GetBarcode")]
-        [HttpGet]
-        public string GetBarcode(string upc, decimal finalRetailPrice)
-        {
-            return BarCodeUtils.GetBarcode(upc, finalRetailPrice);
-        }
     }
 }

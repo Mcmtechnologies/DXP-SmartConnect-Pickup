@@ -16,7 +16,7 @@ namespace DXP.SmartConnectPickup.DataServices.Repositories
         }
 
         /// <summary>
-        /// Get Customer By User Id And Provider Async.
+        /// Gets Customer By User Id And Provider Async.
         /// </summary>
         /// <param name="userId">The userId.</param>
         /// <param name="provider">The provider.</param>
@@ -27,7 +27,7 @@ namespace DXP.SmartConnectPickup.DataServices.Repositories
         }
 
         /// <summary>
-        /// Get Customer By User Id Async.
+        /// Gets Customer By User Id Async.
         /// </summary>
         /// <param name="userId">The userId.</param>
         /// <returns>Task{Customer}.</returns>
@@ -37,7 +37,7 @@ namespace DXP.SmartConnectPickup.DataServices.Repositories
         }
 
         /// <summary>
-        /// GetCustomerNotSyncByProvider Async.
+        /// Gets Customer Not Sync By Provider Async.
         /// </summary>
         /// <param name="provider">The provider.</param>
         /// <param name="pagesize">The pagesize.</param>

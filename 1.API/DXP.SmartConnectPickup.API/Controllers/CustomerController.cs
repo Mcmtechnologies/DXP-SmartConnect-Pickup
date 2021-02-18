@@ -24,19 +24,19 @@ namespace DXP.SmartConnectPickup.API.Controllers
         }
 
         /// <summary>
-        /// Get Customer By User Id.
+        /// Gets customer by user Id.
         /// </summary>
         /// <param name="userId">The userId.</param>
-        /// <param name="IsForce">The bool isForce.</param>
+        /// <param name="isViaMerchant">The isViaMerchant, Get customer via Merchant.</param>
         /// <returns>BaseResponseObject.</returns>
         [HttpGet("getcustomerbyuserid")]
-        public async Task<BaseResponseObject> GetCustomerByUserId(string userId, bool IsForce = false)
+        public async Task<BaseResponseObject> GetCustomerByUserId(string userId, bool isViaMerchant = false)
         {
-            return await _customerService.GetCustomerByUserId(userId, IsForce);
+            return await _customerService.GetCustomerByUserId(userId, isViaMerchant);
         }
 
         /// <summary>
-        /// Create Customer.
+        /// Creates a Customer.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>BaseResponseObject.</returns>
@@ -47,7 +47,7 @@ namespace DXP.SmartConnectPickup.API.Controllers
         }
 
         /// <summary>
-        /// Update Customer.
+        /// Update a Customer.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>BaseResponseObject.</returns>

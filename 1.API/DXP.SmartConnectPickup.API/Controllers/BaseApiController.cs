@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace DXP.SmartConnectPickup.API.Controllers
 {
-
     /// <summary>
     /// Base class for ApiController derived classes.
     /// </summary>

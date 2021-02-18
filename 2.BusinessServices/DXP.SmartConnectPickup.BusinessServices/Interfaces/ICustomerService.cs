@@ -6,7 +6,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Interfaces
 {
     public interface ICustomerService
     {
-        Task<BaseResponseObject> GetCustomerByUserId(string userId, bool IsForce = false);
+        Task<BaseResponseObject> GetCustomerByUserId(string userId, bool isViaMerchant = false);
         Task<BaseResponseObject> CreateCustomerAsync(CustomerFlyBuyModel model);
         Task<BaseResponseObject> UpdateCustomerAsync(CustomerFlyBuyModel model);
         Task<BaseResponseObject> RetryUpdateCustomerMerchantAsync(string token, string userId);
