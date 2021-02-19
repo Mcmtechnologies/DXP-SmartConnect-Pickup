@@ -234,6 +234,19 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             return response;
         }
 
+        /// <summary>
+        /// Build Pickup Adapter.
+        /// </summary>
+        /// <param name="pickupProvider">The pickupProvider.</param>
+        /// <returns>IPickupTarget.</returns>
+        public IPickupTarget BuildPickupAdapter(string pickupProvider)
+        {
+            var mechantAccount = new MerchantAccount();
+            mechantAccount.SetMerchantAccountType(pickupProvider);
+            IPickupTarget pickupTarget = _pickupAdapterFactory.BuildPickupAdapter(mechantAccount);
+            return pickupTarget;
+        }
+
         private async Task UpdateExternalId<T>(Customer customer, T response) where T : BaseCustomerResponse
         {
             if (!string.IsNullOrEmpty(response.ExternalId))
@@ -261,12 +274,6 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             }
         }
 
-        private IPickupTarget BuildPickupAdapter(string PickupProvider)
-        {
-            var mechantAccount = new MerchantAccount();
-            mechantAccount.SetMerchantAccountType(PickupProvider);
-            IPickupTarget pickupTarget = _pickupAdapterFactory.BuildPickupAdapter(mechantAccount);
-            return pickupTarget;
-        }
+       
     }
 }

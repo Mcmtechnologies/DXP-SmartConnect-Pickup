@@ -26,13 +26,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.DataService.IntegrationTests", "6.Testings\DXP.SmartConnectPickup.DataService.IntegrationTests\DXP.SmartConnectPickup.DataService.IntegrationTests.csproj", "{04CDC904-BAB7-4D5C-B920-EDE90ED665BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.IntegrationTests", "6.Testings\DXP.SmartConnectPickup.IntegrationTests\DXP.SmartConnectPickup.IntegrationTests.csproj", "{04CDC904-BAB7-4D5C-B920-EDE90ED665BB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.ConsoleAppTesting", "6.Testings\DXP.SmartConnectPickup.ConsoleAppTesting\DXP.SmartConnectPickup.ConsoleAppTesting.csproj", "{BE24F43D-74B4-4F96-A2DA-6909E9B9FC86}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DXP.SmartConnectPickup.Database", "3.DataServices\DXP.SmartConnectPickup.Database\DXP.SmartConnectPickup.Database.sqlproj", "{287135A7-CBD6-4C55-92EF-22D08C41EAD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DXP.SmartConnectPickup.API", "1.API\DXP.SmartConnectPickup.API\DXP.SmartConnectPickup.API.csproj", "{998E4AB9-8899-4AFB-B706-01C50323B8CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.API", "1.API\DXP.SmartConnectPickup.API\DXP.SmartConnectPickup.API.csproj", "{998E4AB9-8899-4AFB-B706-01C50323B8CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiTesting", "ApiTesting", "{AD03D6F9-7586-4CCA-B6AC-685DE5C26C3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostMan", "PostMan", "{86A6F76A-FA6E-4BDA-AC69-1A2DAE2B4613}"
+	ProjectSection(SolutionItems) = preProject
+		6.Testings\ApiTesting\PostMan\FlyBuy.postman_collection.json = 6.Testings\ApiTesting\PostMan\FlyBuy.postman_collection.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +89,8 @@ Global
 		{BE24F43D-74B4-4F96-A2DA-6909E9B9FC86} = {851B65EC-2D76-4032-B356-4FFE1FF12C6E}
 		{287135A7-CBD6-4C55-92EF-22D08C41EAD5} = {14E769D1-138B-4192-B654-4E3FB4B208BD}
 		{998E4AB9-8899-4AFB-B706-01C50323B8CC} = {301F70DD-888E-4367-BEF7-C99D1BDAE06D}
+		{AD03D6F9-7586-4CCA-B6AC-685DE5C26C3A} = {851B65EC-2D76-4032-B356-4FFE1FF12C6E}
+		{86A6F76A-FA6E-4BDA-AC69-1A2DAE2B4613} = {AD03D6F9-7586-4CCA-B6AC-685DE5C26C3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {85BF031E-E6A6-4C83-93A8-8ECB05B687D3}
