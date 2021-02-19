@@ -1,0 +1,98 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.API", "1.API", "{301F70DD-888E-4367-BEF7-C99D1BDAE06D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.BusinessServices", "2.BusinessServices", "{FC72FB06-9D86-41F8-8F81-9B9A5FCD1151}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.DataServices", "3.DataServices", "{14E769D1-138B-4192-B654-4E3FB4B208BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.BusinessServices", "2.BusinessServices\DXP.SmartConnectPickup.BusinessServices\DXP.SmartConnectPickup.BusinessServices.csproj", "{A2FC8B46-28C5-4D0C-B212-E0DE2F6FBD5F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.DataServices", "3.DataServices\DXP.SmartConnectPickup.DataServices\DXP.SmartConnectPickup.DataServices.csproj", "{1D2246AD-A873-4CAF-B261-0D2238C01DB8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Common", "4.Common", "{F52244D8-A5B1-4E72-A3B4-88BCF403E588}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.Common", "4.Common\DXP.SmartConnectPickup.Common\DXP.SmartConnectPickup.Common.csproj", "{2F413E39-80F4-4290-8ED4-63831276562D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.ServiceClient", "5.ServiceClient", "{5572C4AC-68B3-4006-97A3-FA05D879EBB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Testings", "6.Testings", "{851B65EC-2D76-4032-B356-4FFE1FF12C6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{D90A1E45-B9AA-4282-82A8-60D47E20BDD2}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.IntegrationTests", "6.Testings\DXP.SmartConnectPickup.IntegrationTests\DXP.SmartConnectPickup.IntegrationTests.csproj", "{04CDC904-BAB7-4D5C-B920-EDE90ED665BB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.ConsoleAppTesting", "6.Testings\DXP.SmartConnectPickup.ConsoleAppTesting\DXP.SmartConnectPickup.ConsoleAppTesting.csproj", "{BE24F43D-74B4-4F96-A2DA-6909E9B9FC86}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DXP.SmartConnectPickup.Database", "3.DataServices\DXP.SmartConnectPickup.Database\DXP.SmartConnectPickup.Database.sqlproj", "{287135A7-CBD6-4C55-92EF-22D08C41EAD5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DXP.SmartConnectPickup.API", "1.API\DXP.SmartConnectPickup.API\DXP.SmartConnectPickup.API.csproj", "{998E4AB9-8899-4AFB-B706-01C50323B8CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiTesting", "ApiTesting", "{AD03D6F9-7586-4CCA-B6AC-685DE5C26C3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostMan", "PostMan", "{86A6F76A-FA6E-4BDA-AC69-1A2DAE2B4613}"
+	ProjectSection(SolutionItems) = preProject
+		6.Testings\ApiTesting\PostMan\FlyBuy.postman_collection.json = 6.Testings\ApiTesting\PostMan\FlyBuy.postman_collection.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2FC8B46-28C5-4D0C-B212-E0DE2F6FBD5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FC8B46-28C5-4D0C-B212-E0DE2F6FBD5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2FC8B46-28C5-4D0C-B212-E0DE2F6FBD5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FC8B46-28C5-4D0C-B212-E0DE2F6FBD5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D2246AD-A873-4CAF-B261-0D2238C01DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D2246AD-A873-4CAF-B261-0D2238C01DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D2246AD-A873-4CAF-B261-0D2238C01DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D2246AD-A873-4CAF-B261-0D2238C01DB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F413E39-80F4-4290-8ED4-63831276562D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F413E39-80F4-4290-8ED4-63831276562D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F413E39-80F4-4290-8ED4-63831276562D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F413E39-80F4-4290-8ED4-63831276562D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04CDC904-BAB7-4D5C-B920-EDE90ED665BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04CDC904-BAB7-4D5C-B920-EDE90ED665BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04CDC904-BAB7-4D5C-B920-EDE90ED665BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04CDC904-BAB7-4D5C-B920-EDE90ED665BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE24F43D-74B4-4F96-A2DA-6909E9B9FC86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE24F43D-74B4-4F96-A2DA-6909E9B9FC86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE24F43D-74B4-4F96-A2DA-6909E9B9FC86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE24F43D-74B4-4F96-A2DA-6909E9B9FC86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287135A7-CBD6-4C55-92EF-22D08C41EAD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287135A7-CBD6-4C55-92EF-22D08C41EAD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287135A7-CBD6-4C55-92EF-22D08C41EAD5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{287135A7-CBD6-4C55-92EF-22D08C41EAD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287135A7-CBD6-4C55-92EF-22D08C41EAD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287135A7-CBD6-4C55-92EF-22D08C41EAD5}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{998E4AB9-8899-4AFB-B706-01C50323B8CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{998E4AB9-8899-4AFB-B706-01C50323B8CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{998E4AB9-8899-4AFB-B706-01C50323B8CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{998E4AB9-8899-4AFB-B706-01C50323B8CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A2FC8B46-28C5-4D0C-B212-E0DE2F6FBD5F} = {FC72FB06-9D86-41F8-8F81-9B9A5FCD1151}
+		{1D2246AD-A873-4CAF-B261-0D2238C01DB8} = {14E769D1-138B-4192-B654-4E3FB4B208BD}
+		{2F413E39-80F4-4290-8ED4-63831276562D} = {F52244D8-A5B1-4E72-A3B4-88BCF403E588}
+		{04CDC904-BAB7-4D5C-B920-EDE90ED665BB} = {851B65EC-2D76-4032-B356-4FFE1FF12C6E}
+		{BE24F43D-74B4-4F96-A2DA-6909E9B9FC86} = {851B65EC-2D76-4032-B356-4FFE1FF12C6E}
+		{287135A7-CBD6-4C55-92EF-22D08C41EAD5} = {14E769D1-138B-4192-B654-4E3FB4B208BD}
+		{998E4AB9-8899-4AFB-B706-01C50323B8CC} = {301F70DD-888E-4367-BEF7-C99D1BDAE06D}
+		{AD03D6F9-7586-4CCA-B6AC-685DE5C26C3A} = {851B65EC-2D76-4032-B356-4FFE1FF12C6E}
+		{86A6F76A-FA6E-4BDA-AC69-1A2DAE2B4613} = {AD03D6F9-7586-4CCA-B6AC-685DE5C26C3A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85BF031E-E6A6-4C83-93A8-8ECB05B687D3}
+	EndGlobalSection
+EndGlobal

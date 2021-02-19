@@ -1,0 +1,248 @@
+﻿{
+	"info": {
+		"_postman_id": "3bdaede5-0c8b-4a18-97d1-e408accd5615",
+		"name": "FlyBuy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "FlyBuy API",
+			"item": [
+				{
+					"name": "Get Customer",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\""
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/customers/9537489",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"9537489"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DXP SmartConnectPickup API",
+			"item": [
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"string\",\r\n    \"externalApiToken\": \"string\",\r\n    \"userId\": \"3C89C53B-02D1-fffff-AECE-E9bcaacca3\",\r\n    \"name\": \"fasdf\",\r\n    \"phone\": \"212-200-0555\",\r\n    \"carColor\": \"string\",\r\n    \"carType\": \"string\",\r\n    \"lisensePlate\": \"string\",\r\n    \"termsOfService\": null,\r\n    \"ageVerification\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44320/api/Customer",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"adfafads\",\r\n    \"externalApiToken\": \"string\",\r\n    \"userId\": \"3C89C53B-02D1-fffff-AECE-E9bcaacca3\",\r\n    \"name\": \"aaaa\",\r\n    \"phone\": \"212-200-0555\",\r\n    \"carColor\": \"string\",\r\n    \"carType\": \"string\",\r\n    \"lisensePlate\": \"string\",\r\n    \"termOfService\": true,\r\n    \"ageVerification\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44320/api/Customer",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44320/api/Customer?userId=416EB642-4286-4555-8020-CCD42C8F841E&isViaMerchant=true",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Customer"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "416EB642-4286-4555-8020-CCD42C8F841E"
+								},
+								{
+									"key": "isViaMerchant",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retry Update Customer Merchant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44320/api/Customer/retryupdatecustomermerchantbyuserid?token=Zq8oYO9lxqXJZDbQ8fSbDzXb&userId=E55A4D95-4E43-45CF-BBB4-8AB9704FB5C4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Customer",
+								"retryupdatecustomermerchantbyuserid"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "Zq8oYO9lxqXJZDbQ8fSbDzXb"
+								},
+								{
+									"key": "userId",
+									"value": "E55A4D95-4E43-45CF-BBB4-8AB9704FB5C4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retry Update Mutil Customer Merchant ",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44320/api/Customer/retryupdatemutilcustomermerchant?token=Zq8oYO9lxqXJZDbQ8fSbDzXb&length=3&skipIndex=1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Customer",
+								"retryupdatemutilcustomermerchant"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "Zq8oYO9lxqXJZDbQ8fSbDzXb"
+								},
+								{
+									"key": "length",
+									"value": "3"
+								},
+								{
+									"key": "skipIndex",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "TokenFlyBuy",
+			"value": "A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm"
+		}
+	]
+}
