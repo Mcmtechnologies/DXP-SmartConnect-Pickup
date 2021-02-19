@@ -10,6 +10,9 @@
 			"item": [
 				{
 					"name": "Get Customer",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [
@@ -29,8 +32,12 @@
 								"value": "application/json"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "https://flybuy.radiusnetworks.com/api/v1/customers/9466508",
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/customers/9537489",
 							"protocol": "https",
 							"host": [
 								"flybuy",
@@ -41,7 +48,7 @@
 								"api",
 								"v1",
 								"customers",
-								"9466508"
+								"9537489"
 							]
 						}
 					},
@@ -129,7 +136,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://localhost:44320/api/Customer?userId=416EB642-4286-4555-8020-CCD42C8F841E&IsForce=true",
+							"raw": "https://localhost:44320/api/Customer?userId=416EB642-4286-4555-8020-CCD42C8F841E&isViaMerchant=true",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -145,7 +152,7 @@
 									"value": "416EB642-4286-4555-8020-CCD42C8F841E"
 								},
 								{
-									"key": "IsForce",
+									"key": "isViaMerchant",
 									"value": "true"
 								}
 							]
