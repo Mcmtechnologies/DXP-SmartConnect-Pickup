@@ -52,7 +52,7 @@ namespace DXP.SmartConnectPickup.IntegrationTests.BusinessService
 
                 var userId = Guid.NewGuid().ToString();
 
-                var model = new CustomerFlyBuyModel()
+                var model = new CustomerModel()
                 {
                     AgeVerification = true,
                     TermsOfService = true,
@@ -64,10 +64,10 @@ namespace DXP.SmartConnectPickup.IntegrationTests.BusinessService
                 var flyBuyErrorResponse = "IntegrationTest: Cannot create customer in Flybuy";
                 object flyBuyErrorObj = new { flyBuyErrorResponse };
                 adapter.Setup(x => x.CreateCustomerAsync(It.IsAny<CreateCustomerRequest>(), It.IsAny<string>()))
-                    .ReturnsAsync(new CreateCustomerResponse() { Error = flyBuyErrorObj });
+                    .ReturnsAsync(new CreateCustomerResponse() { Errors = flyBuyErrorObj });
 
                 adapter.Setup(x => x.CreateCustomerAsync(It.IsAny<CreateCustomerRequest>(), It.IsAny<Guid>()))
-                    .ReturnsAsync(new CreateCustomerResponse() { Error = flyBuyErrorResponse });
+                    .ReturnsAsync(new CreateCustomerResponse() { Errors = flyBuyErrorResponse });
 
                 var customerService = new CustomerService(mapper, appSettings, merchantSettings, transactionLogService.Object, customerRepository, adapterFactory.Object);
 

@@ -1,6 +1,6 @@
 ﻿namespace DXP.SmartConnectPickup.BusinessServices.Models
 {
-    public class CustomerFlyBuyModel
+    public class CustomerModel
     {
         public string Id { get; set; }
 

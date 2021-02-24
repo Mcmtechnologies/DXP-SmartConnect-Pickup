@@ -1,6 +1,7 @@
 ﻿using DXP.SmartConnectPickup.DataServices.Interfaces;
 using DXP.SmartConnectPickup.DataServices.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using Xunit;
 using Xunit.Abstractions;
@@ -45,6 +46,8 @@ namespace DXP.SmartConnectPickup.IntegrationTests.DataService
 
                 // assert create
                 Assert.NotEqual(customer.Name, name);
+
+                _output.WriteLine(JsonConvert.SerializeObject(customer, Formatting.Indented));
             }
         }
     }
