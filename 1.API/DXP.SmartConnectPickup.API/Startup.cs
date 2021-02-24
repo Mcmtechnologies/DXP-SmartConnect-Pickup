@@ -101,6 +101,8 @@ namespace DXP.SmartConnectPickup.API
             // Service and Repos
             services.AddScoped<ISettingRepository, SettingRepository>();
             services.AddScoped<ISettingService, SettingService>();
+            services.AddScoped<IStoreServiceRepository, StoreServiceRepository>();
+            services.AddScoped<IStoreService_Service, StoreService_Service>();
             services.AddScoped<ITransactionLogRepository, TransactionLogRepository>();
             services.AddScoped<ITransactionLogService, TransactionLogService>();
             services.AddScoped<ICachingWorkerService, CachingWorkerService>();
@@ -300,22 +302,18 @@ namespace DXP.SmartConnectPickup.API
 
             // request Order
             config.NewConfig<CreateOrderRequest, FlyBuyOrderRequestData>()
-                  .Map(dest => dest.PartnerIdentifier, src => src.DisplayId)
-                  .Map(dest => dest.State, src => src.State);
+                  .Map(dest => dest.PartnerIdentifier, src => src.DisplayId);
 
             config.NewConfig<UpdateOrderRequest, FlyBuyOrderRequestData>()
-                 .Map(dest => dest.PartnerIdentifier, src => src.DisplayId)
-                 .Map(dest => dest.State, src =>src.State);
+                 .Map(dest => dest.PartnerIdentifier, src => src.DisplayId);
 
             // response Order
             config.NewConfig<FlyBuyOrderResponseData, BaseOrderResponse>()
                 .Map(dest => dest.OrderDisplayId, src => src.PartnerIdentifier)
                 .Map(dest => dest.ExternalId, src => src.Id)
-                .Map(dest => dest.OrderStatus, src => src.State)
                 .Include<FlyBuyOrderResponseData, CreateOrderResponse>()
                 .Include<FlyBuyOrderResponseData, UpdateOrderResponse>()
                 .Include<FlyBuyOrderResponseData, GetOrderResponse>();
         }
-
     }
 }

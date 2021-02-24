@@ -2,7 +2,7 @@
 {
     public enum PickupType
     {
-        CurbSide = 1,
+        Curbside = 1,
         Pickup = 2,
         Delivery = 3,
         Dispatch = 4,

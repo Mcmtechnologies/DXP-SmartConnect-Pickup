@@ -32,7 +32,7 @@ namespace DXP.SmartConnectPickup.IntegrationTests.BusinessService
         {
             using (var scope = _factory.Services.CreateScope())
             {
-                // Arrange
+                // Arrange create
                 var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
                 var appSettings = scope.ServiceProvider.GetRequiredService<IOptions<ApplicationSettings>>();
                 var merchantSettings = scope.ServiceProvider.GetRequiredService<IOptions<MerchantAccountSettings>>();
@@ -41,6 +41,7 @@ namespace DXP.SmartConnectPickup.IntegrationTests.BusinessService
 
                 var orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
                 var siteRepository = scope.ServiceProvider.GetRequiredService<ISiteRepository>(); 
+                var storeService_Service = scope.ServiceProvider.GetRequiredService<IStoreService_Service>(); 
 
                 var adapterFactory = scope.ServiceProvider.GetRequiredService<IPickupAdapterFactory>();
 
@@ -49,25 +50,38 @@ namespace DXP.SmartConnectPickup.IntegrationTests.BusinessService
                 var model = new OrderModel()
                 {
                     OrderApiId = orderApiId,
-                    OrderStatus = "Created",
+                    OrderStatus = "New",
                     StoreId = "1",
-                    StoreService = "TTO",
-                    PickupType = "curbside",
+                    StoreServiceId = "5",
+                    PickupType = "Curbside",
                     OrderNumber ="Order number1"
                 };
 
-                var orderService = new OrderService(mapper, appSettings, merchantSettings, transactionLogService, orderRepository,siteRepository, adapterFactory);
+                var orderService = new OrderService(mapper, appSettings, merchantSettings, transactionLogService, orderRepository,siteRepository, adapterFactory, storeService_Service);
 
-                // Act
-                BaseResponseObject response = await orderService.CreateOrderAsync(model);
+                // Act create
+                BaseResponseObject responseCreate = await orderService.CreateOrderAsync(model);
 
-                // Assert
-                Assert.NotNull(response);
-                Assert.NotNull(response.Data);
-                var order = (OrderViewModel)response.Data;
+                // Assert create
+                Assert.NotNull(responseCreate);
+                Assert.NotNull(responseCreate.Data);
+                var order = (OrderViewModel)responseCreate.Data;
                 _output.WriteLine(JsonConvert.SerializeObject(order, Formatting.Indented));
                 Assert.True(order.IsSync);
 
+                // Arrange Update
+                model.PickupWindow = "2021-03-25T17:57:34.603Z";
+                model.OrderStatus = "Cancelled";
+                model.PickupType = "Pickup";
+
+                // Act Update
+                BaseResponseObject responseUpdate = await orderService.UpdateOrderAsync(model);
+
+                Assert.NotNull(responseUpdate);
+                Assert.NotNull(responseUpdate.Data);
+                order = (OrderViewModel)responseUpdate.Data;
+                _output.WriteLine(JsonConvert.SerializeObject(order, Formatting.Indented));
+                Assert.True(order.IsSync);
             }
         }
     }

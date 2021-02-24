@@ -1,5 +1,4 @@
-﻿using DXP.SmartConnectPickup.Common.Enums;
-using DXP.SmartConnectPickup.Common.Models;
+﻿using DXP.SmartConnectPickup.Common.Models;
 
 namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters
 {
@@ -11,6 +10,6 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters
         public string SiteId { get; set; }
         public string PickupWindow { get; set; }
         public string PickupType { get; set; }
-        public PickupState State { get; set; }
+        public string State { get; set; }
     }
 }

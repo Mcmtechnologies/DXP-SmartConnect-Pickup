@@ -17,6 +17,6 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters
 
         public string RedemptionUrl { get; set; }
 
-        public PickupState OrderStatus { get; set; }
+        public string State { get; set; }
     }
 }

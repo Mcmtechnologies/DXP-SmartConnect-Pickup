@@ -98,6 +98,8 @@ namespace DXP.SmartConnectPickup.IntegrationTests
             // Service and Repos
             services.AddScoped<ISettingRepository, SettingRepository>();
             services.AddScoped<ISettingService, SettingService>();
+            services.AddScoped<IStoreServiceRepository, StoreServiceRepository>();
+            services.AddScoped<IStoreService_Service, StoreService_Service>();
             services.AddScoped<ITransactionLogRepository, TransactionLogRepository>();
             services.AddScoped<ITransactionLogService, TransactionLogService>();
             services.AddScoped<ICachingWorkerService, CachingWorkerService>();
@@ -273,68 +275,20 @@ namespace DXP.SmartConnectPickup.IntegrationTests
                 .Include<FlyBuyCustomerResponseData, UpdateCustomerResponse>()
                 .Include<FlyBuyCustomerResponseData, GetCustomerResponse>();
 
-
             // request Order
             config.NewConfig<CreateOrderRequest, FlyBuyOrderRequestData>()
-                  .Map(dest => dest.PartnerIdentifier, src => src.DisplayId)
-                  .Map(dest => dest.State, src => ConvertStateForFlyBuyRequest(src.State));
+                  .Map(dest => dest.PartnerIdentifier, src => src.DisplayId);
 
             config.NewConfig<UpdateOrderRequest, FlyBuyOrderRequestData>()
-                 .Map(dest => dest.PartnerIdentifier, src => src.DisplayId)
-                 .Map(dest => dest.State, src => ConvertStateForFlyBuyRequest(src.State));
+                 .Map(dest => dest.PartnerIdentifier, src => src.DisplayId);
 
             // response Order
             config.NewConfig<FlyBuyOrderResponseData, BaseOrderResponse>()
                 .Map(dest => dest.OrderDisplayId, src => src.PartnerIdentifier)
                 .Map(dest => dest.ExternalId, src => src.Id)
-                .Map(dest => dest.OrderStatus, src => ConvertStateForFlyBuyResponse(src.State))
                 .Include<FlyBuyOrderResponseData, CreateOrderResponse>()
                 .Include<FlyBuyOrderResponseData, UpdateOrderResponse>()
                 .Include<FlyBuyOrderResponseData, GetOrderResponse>();
-        }
-
-        private static string ConvertStateForFlyBuyRequest(PickupState state)
-        {
-            if (state == PickupState.Completed)
-            {
-                return "completed";
-            }
-            else if (state == PickupState.Cancelled)
-            {
-                return "cancelled";
-            }
-            else if (state == PickupState.Ready)
-            {
-                return "ready";
-            }
-            else if (state == PickupState.Delayed)
-            {
-                return "delayed";
-            }
-
-            return "created";
-        }
-
-        private static PickupState ConvertStateForFlyBuyResponse(string state)
-        {
-            if (state == "completed")
-            {
-                return PickupState.Completed;
-            }
-            else if (state == "cancelled")
-            {
-                return PickupState.Cancelled;
-            }
-            else if (state == "ready")
-            {
-                return PickupState.Ready;
-            }
-            else if (state == "delayed")
-            {
-                return PickupState.Delayed;
-            }
-
-            return PickupState.Created;
         }
     }
 }

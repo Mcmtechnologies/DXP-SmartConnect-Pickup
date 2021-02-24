@@ -10,7 +10,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Models
 
         public string OrderNumber { get; set; }
 
-        public string StoreService { get; set; }
+        public string StoreServiceId { get; set; }
 
         public string StoreId { get; set; }
 

@@ -19,6 +19,7 @@ namespace DXP.SmartConnectPickup.DataServices.Context
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<Site> Site { get; set; }
+        public virtual DbSet<StoreService> StoreService { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,8 @@ namespace DXP.SmartConnectPickup.DataServices.Context
                 entity.ToTable("Customer");
 
                 entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.HasKey(e => e.Id).HasName("PK_Customer");
 
                 entity.Property(e => e.UserId).HasMaxLength(128);
 
@@ -53,11 +56,13 @@ namespace DXP.SmartConnectPickup.DataServices.Context
                 entity.Property(e => e.ModifiedBy).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Site>(entity => 
+            modelBuilder.Entity<Site>(entity =>
             {
                 entity.ToTable("Site");
 
                 entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.HasKey(e => e.Id).HasName("PK_Site");
 
                 entity.Property(e => e.Provider).HasMaxLength(256);
 
@@ -77,11 +82,26 @@ namespace DXP.SmartConnectPickup.DataServices.Context
 
             });
 
-            modelBuilder.Entity<Order>(entity => 
+            modelBuilder.Entity<StoreService>(entity =>
+            {
+                entity.ToTable("StoreService");
+
+                entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.HasKey(e => e.Id).HasName("PK_StoreService");
+
+                entity.Property(e => e.ServiceName).HasMaxLength(200);
+
+                entity.Property(e => e.ServiceShortName).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<Order>(entity =>
             {
                 entity.ToTable("Order");
 
                 entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.HasKey(e => e.Id).HasName("PK_Order");
 
                 entity.Property(e => e.OrderApiId).HasMaxLength(128);
 
@@ -121,6 +141,8 @@ namespace DXP.SmartConnectPickup.DataServices.Context
             modelBuilder.Entity<Setting>(entity =>
             {
                 entity.ToTable("Setting");
+
+                entity.HasKey(e => e.Id).HasName("PK_Setting");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(50);
 

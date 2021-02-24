@@ -29,6 +29,8 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         private readonly IOrderRepository _orderRepository;
         private readonly ISiteRepository _siteRepository;
         private readonly IPickupAdapterFactory _pickupAdapterFactory;
+        private readonly IStoreService_Service _storeService_Service;
+
         public OrderService(
             IMapper mapper,
             IOptions<ApplicationSettings> applicationSettings,
@@ -36,7 +38,8 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             ITransactionLogService transactionLogService,
             IOrderRepository orderRepository,
             ISiteRepository siteRepository,
-            IPickupAdapterFactory pickupAdapterFactory)
+            IPickupAdapterFactory pickupAdapterFactory,
+            IStoreService_Service storeService_Service)
         {
             _mapper = mapper;
             _applicationSettings = applicationSettings.Value;
@@ -45,6 +48,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             _orderRepository = orderRepository;
             _siteRepository = siteRepository;
             _pickupAdapterFactory = pickupAdapterFactory;
+            _storeService_Service = storeService_Service;
         }
 
         /// <summary>
@@ -71,7 +75,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
                 {
                     order.IsSync = null;
                     order.ExternalId = response.ExternalId;
-                    order.ExternalStatus = response.OrderStatus;
+                    order.ExternalStatus = response.State;
                     order.RedemptionCode = response.RedemptionCode;
                     order.RedemptionUrl = response.RedemptionUrl;
                 }
@@ -91,10 +95,15 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             Guard.AgainstNullOrEmpty(nameof(model.OrderApiId), model.OrderApiId);
             Guard.AgainstNullOrEmpty(nameof(model.OrderNumber), model.OrderNumber);
             Guard.AgainstNullOrEmpty(nameof(model.StoreId), model.StoreId);
-            Guard.AgainstNullOrEmpty(nameof(model.StoreService), model.StoreService);
+            Guard.AgainstNullOrEmpty(nameof(model.StoreServiceId), model.StoreServiceId);
             Guard.AgainstNullOrEmpty(nameof(model.OrderStatus), model.OrderStatus);
 
-            Guard.AgainstInvalidArgumentWithMessage($"{nameof(model.OrderStatus)} is Invalid!", Enum.IsDefined(typeof(OrderStatus),model.OrderStatus));
+            Guard.AgainstInvalidArgumentWithMessage($"{nameof(model.OrderStatus)} is Invalid!", Enum.IsDefined(typeof(OrderStatus), model.OrderStatus));
+
+            if (model.PickupType != null)
+                Guard.AgainstInvalidArgumentWithMessage($"{nameof(model.PickupType)} is Invalid!", Enum.IsDefined(typeof(PickupType), model.PickupType));
+
+            model.PickupType ??= _merchantAccountSettings.PickupTypeDefault;
 
             Order existOrder = await _orderRepository.GetOrderByOrderApiIdAsync(model.OrderApiId);
             Guard.AgainstInvalidArgumentWithMessage($"Order is already created.", existOrder == null);
@@ -102,20 +111,19 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             Site site = await _siteRepository.GetSiteByStoreIdAndProvider(model.StoreId, _merchantAccountSettings.PickupProviderDefault);
             Guard.AgainstInvalidArgumentWithMessage($"Site is not found!.", site != null);
 
+            StoreService service =  await _storeService_Service.GetStoreServicesById(model.StoreServiceId);
+
             Order order = model.Adapt<Order>();
 
             order.Id = Guid.NewGuid().ToString();
             order.StoreId = model.StoreId;
             order.ExternalSiteId = site.ExternalId;
             order.OrderApiId = model.OrderApiId;
-            order.StoreService = model.StoreService;
-            // TODO reactor code: use config or enum storeService, PickupType
-            order.DisplayId = model.StoreService == "TTO" ? "TTO_" + model.OrderNumber : model.OrderNumber;
+            order.StoreService = model.StoreServiceId;
+            order.DisplayId = service != null ? service.ServiceShortName +"_" + model.OrderNumber : model.OrderNumber;
             order.Provider = _merchantAccountSettings.PickupProviderDefault;
             order.IsSync = false;
             order.ExternalId = null;
-
-            order.PickupType = model.PickupType ?? _merchantAccountSettings.PickupTypeDefault;
 
             order.CreatedBy = AuthorizationConstants.SITE_ADMIN_ROLE;
             order.CreatedDate = DateTime.UtcNow;
@@ -169,7 +177,8 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             {
                 transactionLogStep = TransactionLogStep.CreateOrder;
                 var _request = _mapper.Map<CreateOrderRequest>(order);
-                _request.State = GetStateByOrderStatus(order.OrderStatus);
+                _request.State = GetStateByOrderStatus(order.OrderStatus, _merchantAccountSettings.PickupProviderDefault);
+                _request.PickupType = GetPickupTypeForMerchantRequest(order.PickupType, _merchantAccountSettings.PickupProviderDefault);
 
                 response = await pickupTarget.CreateOrderAsync(_request, _request.GetCorrelationId());
                 request = _request;
@@ -178,7 +187,8 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             {
                 transactionLogStep = TransactionLogStep.UpdateOrder;
                 var _request = _mapper.Map<UpdateOrderRequest>(order);
-                _request.State =  GetStateByOrderStatus(order.OrderStatus);
+                _request.State = GetStateByOrderStatus(order.OrderStatus, _merchantAccountSettings.PickupProviderDefault);
+                _request.PickupType = GetPickupTypeForMerchantRequest(order.PickupType, _merchantAccountSettings.PickupProviderDefault);
 
                 response = await pickupTarget.UpdateOrderAsync(_request, _request.GetCorrelationId());
                 request = _request;
@@ -190,12 +200,13 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             return response;
         }
 
-        private static PickupState GetStateByOrderStatus(string orderStatus)
+        private static string GetStateByOrderStatus(string orderStatus, string provider)
         {
             var state = PickupState.Created;
+
             if (orderStatus == OrderStatus.Cancelled.ToString())
             {
-                state =  PickupState.Cancelled;
+                state = PickupState.Cancelled;
             }
             else if (orderStatus == OrderStatus.Ready.ToString())
             {
@@ -203,12 +214,16 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             }
             else if (orderStatus == OrderStatus.Completed.ToString())
             {
-                state =  PickupState.Completed;
+                state = PickupState.Completed;
             }
-        
-            return state;
-        }
 
+            if (provider == MerchantAccountType.FlyBuy.ToString())
+            {
+                return ConvertStateForFlyBuyRequest(state);
+            }
+
+            return state.ToString();
+        }
 
         private static string ConvertStateForFlyBuyRequest(PickupState state)
         {
@@ -232,34 +247,47 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             return "created";
         }
 
-        private static PickupState ConvertStateForFlyBuyResponse(string state)
+        private static string GetPickupTypeForMerchantRequest(string pickupType, string provider)
         {
-            if (state == "completed")
+            if (provider == MerchantAccountType.FlyBuy.ToString())
             {
-                return PickupState.Completed;
-            }
-            else if (state == "cancelled")
-            {
-                return PickupState.Cancelled;
-            }
-            else if (state == "ready")
-            {
-                return PickupState.Ready;
-            }
-            else if (state == "delayed")
-            {
-                return PickupState.Delayed;
+                return ConvertPickupTypeForFlyBuyRequest(pickupType);
             }
 
-            return PickupState.Created;
+            return pickupType;
         }
 
+        private static string ConvertPickupTypeForFlyBuyRequest(string pickupType)
+        {
+            if (pickupType == PickupType.Curbside.ToString())
+            {
+                return "curbside";
+            }
+            else if (pickupType == PickupType.Delivery.ToString())
+            {
+                return "delivery";
+            }
+            else if (pickupType == PickupType.Dispatch.ToString())
+            {
+                return "dispatch";
+            }
+            else if (pickupType == PickupType.DriveThru.ToString())
+            {
+                return "drive_thru";
+            }
+            else if (pickupType == PickupType.Pickup.ToString())
+            {
+                return "pickup";
+            }
+
+            return pickupType.ToString();
+        }
         private async Task UpdateExternalId<T>(Order order, T response) where T : BaseOrderResponse
         {
             if (!string.IsNullOrEmpty(response.ExternalId))
             {
                 order.ExternalId = response.ExternalId;
-                order.ExternalStatus = response.OrderStatus.ToString();
+                order.ExternalStatus = response.State.ToString();
                 order.RedemptionCode = response.RedemptionCode;
                 order.RedemptionUrl = response.RedemptionUrl;
                 order.IsSync = true;
