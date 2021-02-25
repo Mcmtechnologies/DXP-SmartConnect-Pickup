@@ -48,7 +48,7 @@ namespace DXP.SmartConnectPickup.IntegrationTests.BusinessService
                     OrderApiId = orderApiId,
                     OrderStatus = "New",
                     StoreId = "1",
-                    StoreServiceId = "5",
+                    ServiceId = "5",
                     PickupType = "Curbside",
                     OrderNumber = "Order number1"
                 };

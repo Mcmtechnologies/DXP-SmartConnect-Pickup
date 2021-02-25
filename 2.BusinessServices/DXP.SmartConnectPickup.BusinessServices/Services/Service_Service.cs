@@ -20,7 +20,11 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             _memoryCache = memoryCache;
         }
 
-        public async Task<List<Service>> GetAllStoreServices()
+        /// <summary>
+        /// Gets All Services Async.
+        /// </summary>
+        /// <returns> Task{List{Service}}</returns>
+        public async Task<List<Service>> GetAllServicesAsync()
         {
             string key = keyCache + "_GetAll";
             _memoryCache.TryGetValue(keyCache, out List<Service> services);
@@ -34,7 +38,12 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             return services;
         }
 
-        public async Task<Service> GetStoreServicesById(string id)
+        /// <summary>
+        /// Gets Service By Id Async.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>Task{Service}</returns>
+        public async Task<Service> GetServicesByIdAsync(string id)
         {
             string key = keyCache + "_Id: " + id;
             _memoryCache.TryGetValue(key, out Service service);

@@ -96,7 +96,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             Guard.AgainstNullOrEmpty(nameof(model.OrderApiId), model.OrderApiId);
             Guard.AgainstNullOrEmpty(nameof(model.OrderNumber), model.OrderNumber);
             Guard.AgainstNullOrEmpty(nameof(model.StoreId), model.StoreId);
-            Guard.AgainstNullOrEmpty(nameof(model.StoreServiceId), model.StoreServiceId);
+            Guard.AgainstNullOrEmpty(nameof(model.ServiceId), model.ServiceId);
             Guard.AgainstNullOrEmpty(nameof(model.OrderStatus), model.OrderStatus);
 
             Guard.AgainstInvalidArgumentWithMessage($"{nameof(model.OrderStatus)} is Invalid!", Enum.IsDefined(typeof(OrderStatus), model.OrderStatus));
@@ -112,7 +112,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             Site site = await _siteRepository.GetSiteByStoreIdAndProvider(model.StoreId, _merchantAccountSettings.PickupProviderDefault);
             Guard.AgainstInvalidArgumentWithMessage($"Site is not found!.", site != null);
 
-            Service service =  await _service_Service.GetStoreServicesById(model.StoreServiceId);
+            Service service =  await _service_Service.GetServicesByIdAsync(model.ServiceId);
 
             Order order = model.Adapt<Order>();
 
@@ -120,7 +120,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             order.StoreId = model.StoreId;
             order.ExternalSiteId = site.ExternalId;
             order.OrderApiId = model.OrderApiId;
-            order.StoreService = model.StoreServiceId;
+            order.StoreService = model.ServiceId;
             order.DisplayId = service != null ? service.ServiceShortName +"_" + model.OrderNumber : model.OrderNumber;
             order.Provider = _merchantAccountSettings.PickupProviderDefault;
             order.IsSync = false;

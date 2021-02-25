@@ -6,7 +6,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Interfaces
 {
     public interface IService_Service
     {
-        Task<List<Service>> GetAllStoreServices();
-        Task<Service> GetStoreServicesById(string id);
+        Task<List<Service>> GetAllServicesAsync();
+        Task<Service> GetServicesByIdAsync(string id);
     }
 }

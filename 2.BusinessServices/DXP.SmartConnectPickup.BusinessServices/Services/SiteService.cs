@@ -7,7 +7,6 @@ using DXP.SmartConnectPickup.Common.Services;
 using DXP.SmartConnectPickup.Common.Utils;
 using DXP.SmartConnectPickup.DataServices.Interfaces;
 using DXP.SmartConnectPickup.DataServices.Models;
-using MapsterMapper;
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
@@ -17,20 +16,19 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
     public class SiteService : GenericService, ISiteService
     {
         private readonly ISiteRepository _siteRepository;
-        private readonly IMapper _mapper;
-        private readonly ApplicationSettings _applicationSettings;
         private readonly MerchantAccountSettings _merchantAccountSettings;
         public SiteService(ISiteRepository siteRepository,
-            IMapper mapper,
-            IOptions<ApplicationSettings> applicationSettings,
             IOptions<MerchantAccountSettings> merchantAccountSettings)
         {
             _siteRepository = siteRepository;
-            _mapper = mapper;
-            _applicationSettings = applicationSettings.Value;
             _merchantAccountSettings = merchantAccountSettings.Value;
         }
 
+        /// <summary>
+        /// Creates a Site Async.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>Task{BaseResponseObject}.</returns>
         public async Task<BaseResponseObject> CreateSiteAsync(SiteModel model)
         {
             Guard.AgainstNullOrEmpty(nameof(model.ExternalSiteId), model.ExternalSiteId);
@@ -58,6 +56,11 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             return ReturnSuccess(site);
         }
 
+        /// <summary>
+        /// Update  Site Async.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>Task{BaseResponseObject}.</returns>
         public async Task<BaseResponseObject> UpdateSiteAsync(SiteModel model)
         {
             Guard.AgainstNullOrEmpty(nameof(model.ExternalSiteId), model.ExternalSiteId);
@@ -76,11 +79,14 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             return ReturnSuccess(site);
         }
 
+        /// <summary>
+        /// Gets Site By StoreApi Id.
+        /// </summary>
+        /// <param name="storeApiId">The storeApiId</param>
+        /// <returns>Task{BaseResponseObject}.</returns>
         public async Task<BaseResponseObject> GetSiteByStoreApiId(string storeApiId)
         {
             return ReturnSuccess(await _siteRepository.GetSiteByStoreIdAndProvider(storeApiId, _merchantAccountSettings.PickupProviderDefault));
         }
-
-       
     }
 }
