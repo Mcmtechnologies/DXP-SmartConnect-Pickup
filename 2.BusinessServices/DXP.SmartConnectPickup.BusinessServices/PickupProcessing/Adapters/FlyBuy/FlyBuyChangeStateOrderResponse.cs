@@ -7,5 +7,6 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
 {
     public class FlyBuyChangeStateOrderResponse : FlyBuyResponseBase
     {
+
     }
 }

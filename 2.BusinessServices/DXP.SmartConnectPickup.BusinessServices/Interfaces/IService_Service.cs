@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace DXP.SmartConnectPickup.BusinessServices.Interfaces
 {
-    public interface IStoreService_Service
+    public interface IService_Service
     {
-        Task<List<StoreService>> GetAllStoreServices();
-        Task<StoreService> GetStoreServicesById(string id);
+        Task<List<Service>> GetAllStoreServices();
+        Task<Service> GetStoreServicesById(string id);
     }
 }

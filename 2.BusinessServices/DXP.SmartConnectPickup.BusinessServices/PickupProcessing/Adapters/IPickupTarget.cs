@@ -22,5 +22,8 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters
 
         Task<GetOrderResponse> GetOrderAsync(GetOrderRequest request, Guid correlationId);
         Task<GetOrderResponse> GetOrderAsync(GetOrderRequest request, string correlationId);
+
+        Task<ChangeStateOrderResponse> ChangeStateOrder(ChangeStateOrderRequest request, Guid correlationId);
+        Task<ChangeStateOrderResponse> ChangeStateOrder(ChangeStateOrderRequest request, string correlationId);
     }
 }

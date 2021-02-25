@@ -19,7 +19,7 @@ namespace DXP.SmartConnectPickup.DataServices.Context
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<Site> Site { get; set; }
-        public virtual DbSet<StoreService> StoreService { get; set; }
+        public virtual DbSet<Service> Service { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -82,13 +82,13 @@ namespace DXP.SmartConnectPickup.DataServices.Context
 
             });
 
-            modelBuilder.Entity<StoreService>(entity =>
+            modelBuilder.Entity<Service>(entity =>
             {
-                entity.ToTable("StoreService");
+                entity.ToTable("Service");
 
                 entity.Property(e => e.Id).HasMaxLength(128);
 
-                entity.HasKey(e => e.Id).HasName("PK_StoreService");
+                entity.HasKey(e => e.Id).HasName("PK_Service");
 
                 entity.Property(e => e.ServiceName).HasMaxLength(200);
 

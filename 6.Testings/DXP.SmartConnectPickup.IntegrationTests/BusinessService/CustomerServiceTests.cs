@@ -83,7 +83,7 @@ namespace DXP.SmartConnectPickup.IntegrationTests.BusinessService
                 transactionLogService.Verify(x => x
                     .AddTransactionLogAsync(TransactionLogStep.CreateCustomer, TransactionLogStatus.Error, It.IsAny<string>(), JsonConvert.SerializeObject(flyBuyErrorResponse), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()), Times.Once);
 
-                _output.WriteLine(JsonConvert.SerializeObject(customer,Formatting.Indented));
+                _output.WriteLine(JsonConvert.SerializeObject(customer, Formatting.Indented));
             }
         }
     }

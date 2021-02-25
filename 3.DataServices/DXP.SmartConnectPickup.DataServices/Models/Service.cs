@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DXP.SmartConnectPickup.DataServices.Models
 {
-    public class StoreService : Entity<string>
+    public class Service : Entity<string>
     {
         public string ServiceName { get; set; }
 

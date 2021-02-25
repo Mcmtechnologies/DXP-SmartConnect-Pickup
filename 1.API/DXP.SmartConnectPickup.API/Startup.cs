@@ -1,14 +1,12 @@
 using DXP.SmartConnectPickup.API.Middlewares;
 using DXP.SmartConnectPickup.BusinessServices.Common;
 using DXP.SmartConnectPickup.BusinessServices.Interfaces;
-using DXP.SmartConnectPickup.BusinessServices.Models;
 using DXP.SmartConnectPickup.BusinessServices.PickupProcessing;
 using DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters;
 using DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyBuy;
 using DXP.SmartConnectPickup.BusinessServices.Services;
 using DXP.SmartConnectPickup.Common.ApplicationSettings;
 using DXP.SmartConnectPickup.Common.Authentication;
-using DXP.SmartConnectPickup.Common.Enums;
 using DXP.SmartConnectPickup.Common.WebApi;
 using DXP.SmartConnectPickup.DataServices.Context;
 using DXP.SmartConnectPickup.DataServices.Interfaces;
@@ -101,8 +99,8 @@ namespace DXP.SmartConnectPickup.API
             // Service and Repos
             services.AddScoped<ISettingRepository, SettingRepository>();
             services.AddScoped<ISettingService, SettingService>();
-            services.AddScoped<IStoreServiceRepository, StoreServiceRepository>();
-            services.AddScoped<IStoreService_Service, StoreService_Service>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IService_Service, Service_Service>();
             services.AddScoped<ITransactionLogRepository, TransactionLogRepository>();
             services.AddScoped<ITransactionLogService, TransactionLogService>();
             services.AddScoped<ICachingWorkerService, CachingWorkerService>();
@@ -273,7 +271,7 @@ namespace DXP.SmartConnectPickup.API
 
             // Order
             config.NewConfig<Order, CreateOrderRequest>()
-                .Map(dest =>dest.SiteId,src => src.ExternalSiteId);
+                .Map(dest => dest.SiteId, src => src.ExternalSiteId);
 
             config.NewConfig<Order, UpdateOrderRequest>()
                  .Map(dest => dest.SiteId, src => src.ExternalSiteId);
@@ -307,6 +305,9 @@ namespace DXP.SmartConnectPickup.API
             config.NewConfig<UpdateOrderRequest, FlyBuyOrderRequestData>()
                  .Map(dest => dest.PartnerIdentifier, src => src.DisplayId);
 
+            config.NewConfig<ChangeStateOrderRequest, FlyBuyOrderEventStateChangeRequestData>()
+                .Map(dest => dest.OrderId, src => src.ExternalId);
+
             // response Order
             config.NewConfig<FlyBuyOrderResponseData, BaseOrderResponse>()
                 .Map(dest => dest.OrderDisplayId, src => src.PartnerIdentifier)
@@ -314,6 +315,8 @@ namespace DXP.SmartConnectPickup.API
                 .Include<FlyBuyOrderResponseData, CreateOrderResponse>()
                 .Include<FlyBuyOrderResponseData, UpdateOrderResponse>()
                 .Include<FlyBuyOrderResponseData, GetOrderResponse>();
+
+
         }
     }
 }

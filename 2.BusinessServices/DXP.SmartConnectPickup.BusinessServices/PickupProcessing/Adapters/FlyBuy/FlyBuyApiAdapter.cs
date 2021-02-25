@@ -130,17 +130,6 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
             return customer;
         }
 
-        private static void MappingBaseResponse(FlyBuyResponseBase flyBuyResponse, BasePickupResponse pickupResponse)
-        {
-            pickupResponse.Errors = flyBuyResponse.Errors;
-            pickupResponse.Error = flyBuyResponse.Error;
-            pickupResponse.RequestData = flyBuyResponse.RequestData;
-            pickupResponse.RequestError = flyBuyResponse.RequestError;
-            pickupResponse.RequestHeaders = flyBuyResponse.RequestHeaders;
-            pickupResponse.RequestUrl = flyBuyResponse.RequestUrl;
-            pickupResponse.Response = flyBuyResponse.Response;
-        }
-
         /// <summary>
         /// Gets Order Async.
         /// </summary>
@@ -254,5 +243,42 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
 
             return Order;
         }
+
+        public async Task<ChangeStateOrderResponse> ChangeStateOrder(ChangeStateOrderRequest request, Guid correlationId)
+        {
+            return await ChangeStateOrder(request, correlationId.ToString());
+        }
+
+        public async Task<ChangeStateOrderResponse> ChangeStateOrder(ChangeStateOrderRequest request, string correlationId)
+        {
+            var flyBuyRequest = new FlyBuyChangeStateOrderRequest()
+            {
+                Data = _mapper.Map<FlyBuyOrderEventStateChangeRequestData>(request)
+            };
+
+            FlyBuyChangeStateOrderResponse flyBuyResponse = await _flyBuyApiAdaptee.ChangeStateOrder(flyBuyRequest, correlationId);
+
+            var response = new ChangeStateOrderResponse()
+            {
+                IsSucess = flyBuyResponse.Errors == null && flyBuyResponse.Error == null 
+                    && (flyBuyResponse.Response == null || flyBuyResponse.Response.IsSuccessStatusCode)
+            };
+
+            MappingBaseResponse(flyBuyResponse, response);
+
+            return response;
+        }
+
+        private static void MappingBaseResponse(FlyBuyResponseBase flyBuyResponse, BasePickupResponse pickupResponse)
+        {
+            pickupResponse.Errors = flyBuyResponse.Errors;
+            pickupResponse.Error = flyBuyResponse.Error;
+            pickupResponse.RequestData = flyBuyResponse.RequestData;
+            pickupResponse.RequestError = flyBuyResponse.RequestError;
+            pickupResponse.RequestHeaders = flyBuyResponse.RequestHeaders;
+            pickupResponse.RequestUrl = flyBuyResponse.RequestUrl;
+            pickupResponse.Response = flyBuyResponse.Response;
+        }
+
     }
 }

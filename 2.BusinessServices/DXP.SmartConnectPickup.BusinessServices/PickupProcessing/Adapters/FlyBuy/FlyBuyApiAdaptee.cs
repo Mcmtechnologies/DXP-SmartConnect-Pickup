@@ -38,6 +38,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
 
             // Order Event
             public const string SendOrderEvent = "/events";
+            public const string OrderEventTypeStateChange = "state_change";
         }
 
         /// <summary>
@@ -345,10 +346,10 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
         public async Task<FlyBuyChangeStateOrderResponse> ChangeStateOrder(FlyBuyChangeStateOrderRequest request, string correlationId)
         {
             // Logs request data
+            request.Data.EventType = PathConstants.OrderEventTypeStateChange;
             _logger.LogInformation($"Call to {nameof(ChangeStateOrder)} with correlationId: {correlationId}, request: {JsonConvert.SerializeObject(request)}.");
 
             AddRequestHeaders();
-
             string providerName = _appSettings.FlyBuy.ProviderName;
             string requestUri = $"{_appSettings.FlyBuy.ApiUrl}{PathConstants.SendOrderEvent}";
             FluentUriBuilder httpRequest = CreateRequest(requestUri);

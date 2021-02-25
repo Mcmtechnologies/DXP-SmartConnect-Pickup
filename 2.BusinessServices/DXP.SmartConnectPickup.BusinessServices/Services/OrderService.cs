@@ -5,6 +5,7 @@ using DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters;
 using DXP.SmartConnectPickup.Common.ApplicationSettings;
 using DXP.SmartConnectPickup.Common.Constants;
 using DXP.SmartConnectPickup.Common.Enums;
+using DXP.SmartConnectPickup.Common.Exceptions;
 using DXP.SmartConnectPickup.Common.Models;
 using DXP.SmartConnectPickup.Common.Services;
 using DXP.SmartConnectPickup.Common.Utils;
@@ -29,7 +30,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         private readonly IOrderRepository _orderRepository;
         private readonly ISiteRepository _siteRepository;
         private readonly IPickupAdapterFactory _pickupAdapterFactory;
-        private readonly IStoreService_Service _storeService_Service;
+        private readonly IService_Service _service_Service;
 
         public OrderService(
             IMapper mapper,
@@ -39,7 +40,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             IOrderRepository orderRepository,
             ISiteRepository siteRepository,
             IPickupAdapterFactory pickupAdapterFactory,
-            IStoreService_Service storeService_Service)
+            IService_Service service_Service)
         {
             _mapper = mapper;
             _applicationSettings = applicationSettings.Value;
@@ -48,16 +49,16 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             _orderRepository = orderRepository;
             _siteRepository = siteRepository;
             _pickupAdapterFactory = pickupAdapterFactory;
-            _storeService_Service = storeService_Service;
+            _service_Service = service_Service;
         }
 
         /// <summary>
         /// Gets Order By User Id.
         /// </summary>
-        /// <param name="orderApiId">The userId.</param>
+        /// <param name="orderApiId">The orderApiId.</param>
         /// <param name="isViaMerchant">The isViaMerchant.</param>
         /// <returns>Task{BaseResponseObject}.</returns>
-        public async Task<BaseResponseObject> GetOrderByUserId(string orderApiId, bool isViaMerchant = false)
+        public async Task<BaseResponseObject> GetOrderByOfferApiId(string orderApiId, bool isViaMerchant = false)
         {
             Order order = await _orderRepository.GetOrderByOrderApiIdAsync(orderApiId);
 
@@ -111,7 +112,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             Site site = await _siteRepository.GetSiteByStoreIdAndProvider(model.StoreId, _merchantAccountSettings.PickupProviderDefault);
             Guard.AgainstInvalidArgumentWithMessage($"Site is not found!.", site != null);
 
-            StoreService service =  await _storeService_Service.GetStoreServicesById(model.StoreServiceId);
+            Service service =  await _service_Service.GetStoreServicesById(model.StoreServiceId);
 
             Order order = model.Adapt<Order>();
 
@@ -161,6 +162,139 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             await UpdateOrderMerchantAsync(order);
 
             return ReturnSuccess(_mapper.Map<Order, OrderViewModel>(order));
+        }
+
+        /// <summary>
+        /// Change State Order Event.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>Task{BaseResponseObject}.</returns>
+        public async Task<BaseResponseObject> ChangeStateOrderEvent(OrderModel model)
+        {
+            Guard.AgainstNullOrEmpty(nameof(model.OrderApiId), model.OrderApiId);
+            Guard.AgainstNullOrEmpty(nameof(model.OrderStatus), model.OrderStatus);
+
+            Guard.AgainstInvalidArgumentWithMessage($"{nameof(model.OrderStatus)} is Invalid!", Enum.IsDefined(typeof(OrderStatus), model.OrderStatus));
+            Guard.AgainstInvalidArgumentWithMessage(nameof(model.OrderStatus), model.OrderStatus != OrderStatus.New.ToString());
+
+            Order order = await _orderRepository.GetOrderByOrderApiIdAsync(model.OrderApiId);
+
+            Guard.AgainstNotFound(nameof(model.OrderApiId), order);
+
+            if(order.ExternalId == null)
+            {
+                BaseOrderResponse responseUpdateMerchant = await UpdateOrderMerchantAsync(order);
+                string errorMessage = responseUpdateMerchant.Error != null ? JsonConvert.SerializeObject(responseUpdateMerchant.Error) : null;
+                errorMessage ??= responseUpdateMerchant.Errors != null ? JsonConvert.SerializeObject(responseUpdateMerchant.Errors) : responseUpdateMerchant.RequestError?.Message;
+
+                if (order.ExternalId == null)
+                {
+                    return new BaseResponseObject()
+                    {
+                        Status = false,
+                        ErrorCode = responseUpdateMerchant.RequestError != null ? ResponseErrorCode.SystemError : ResponseErrorCode.UnhandleException,
+                        Message = errorMessage,
+                        StackTrace = !_applicationSettings.IsProduction ? responseUpdateMerchant.RequestError?.StackTrace : string.Empty
+                    };
+                }
+            }
+
+            // Builds pickup adapter
+            IPickupTarget pickupTarget = PickupHelper.BuildPickupAdapter(_pickupAdapterFactory, _merchantAccountSettings.PickupProviderDefault);
+
+            var request = _mapper.Map<ChangeStateOrderRequest>(order);
+
+            request.State = GetStateByOrderStatus(model.OrderStatus, _merchantAccountSettings.PickupProviderDefault);
+
+            ChangeStateOrderResponse response = await pickupTarget.ChangeStateOrder(request, request.GetCorrelationId());
+
+            await PickupHelper.HandleErrorResponse(_transactionLogService, request, response, TransactionLogStep.GetOrder);
+
+            if(response.IsSucess)
+            {
+                order.ExternalStatus = request.State;
+                order.OrderStatus = model.OrderStatus;
+
+                await _orderRepository.UpdateAndSaveChangesAsync(order);
+
+                return ReturnSuccess(null, "State order had been update success!");
+            }
+            else
+            {
+                string errorMessage = response.Error != null ? JsonConvert.SerializeObject(response.Error) : null;
+
+                errorMessage ??= response.Errors != null ? JsonConvert.SerializeObject(response.Errors) : response.RequestError?.Message;
+
+                return new BaseResponseObject()
+                {
+                    Status = false,
+                    ErrorCode = response.RequestError != null ? ResponseErrorCode.SystemError : ResponseErrorCode.UnhandleException,
+                    Message = errorMessage,
+                    StackTrace = !_applicationSettings.IsProduction ? response.RequestError?.StackTrace : string.Empty
+                };
+            }
+        }
+
+        /// <summary>
+        /// Retry Update a Order Merchant Async.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <param name="orderApiId">The orderApiId.</param>
+        /// <returns>Task{BaseResponseObject}.</returns>
+        public async Task<BaseResponseObject> RetryUpdateOrderMerchantAsync(string token, string orderApiId)
+        {
+            Guard.AgainstInvalidArgument(nameof(token), token == _merchantAccountSettings.TokenRetry);
+
+            Order Order = await _orderRepository.GetOrderByOrderApiIdAsync(orderApiId);
+
+            Guard.AgainstNotFound(nameof(orderApiId), Order);
+
+            BaseOrderResponse response = await UpdateOrderMerchantAsync(Order);
+
+            if (!string.IsNullOrEmpty(response.ExternalId))
+            {
+                return ReturnSuccess(_mapper.Map<Order, OrderViewModel>(Order));
+            }
+            else
+            {
+                return new BaseResponseObject()
+                {
+                    Status = false,
+                    ErrorCode = response.RequestError != null ? ResponseErrorCode.SystemError : ResponseErrorCode.UnhandleException,
+                    Message = response.Errors != null ? JsonConvert.SerializeObject(response.Errors) : response.RequestError?.Message,
+                    StackTrace = !_applicationSettings.IsProduction ? response.RequestError?.StackTrace : string.Empty
+                };
+            }
+        }
+
+        /// <summary>
+        /// Retry Update Mutil Order Merchant Async.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <param name="length">The length.</param>
+        /// <param name="skipIndex">The skipIndex.</param>
+        /// <returns>Task{BaseResponseObject}.</returns>
+        public async Task<BaseResponseObject> RetryUpdateMutilOrderMerchantAsync(string token, int length = 10, int skipIndex = 1)
+        {
+            Guard.AgainstInvalidArgument(nameof(token), token == _merchantAccountSettings.TokenRetry);
+
+            length = length > _merchantAccountSettings.MaxNumberOrderRetry ? _merchantAccountSettings.MaxNumberOrderRetry : length;
+
+            IEnumerable<Order> Orders = await _orderRepository
+                .GetOrderNotSyncByProviderAsync(_merchantAccountSettings.PickupProviderDefault, length, skipIndex);
+
+            int totalSuccess = 0;
+            foreach (var Order in Orders)
+            {
+                BaseOrderResponse response = await UpdateOrderMerchantAsync(Order);
+
+                if (!string.IsNullOrEmpty(response.ExternalId))
+                {
+                    totalSuccess++;
+                }
+            }
+
+            return ReturnSuccess(null, $"Update Order Merchant Sync Success {totalSuccess} of {length}");
         }
 
         private async Task<BaseOrderResponse> UpdateOrderMerchantAsync(Order order)
@@ -227,6 +361,11 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
 
         private static string ConvertStateForFlyBuyRequest(PickupState state)
         {
+            if(state == PickupState.Created)
+            {
+                return "created";
+            }
+
             if (state == PickupState.Completed)
             {
                 return "completed";
@@ -244,7 +383,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
                 return "delayed";
             }
 
-            return "created";
+            throw new NotFoundException($"The {state} is not support");
         }
 
         private static string GetPickupTypeForMerchantRequest(string pickupType, string provider)
@@ -282,6 +421,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
 
             return pickupType.ToString();
         }
+
         private async Task UpdateExternalId<T>(Order order, T response) where T : BaseOrderResponse
         {
             if (!string.IsNullOrEmpty(response.ExternalId))

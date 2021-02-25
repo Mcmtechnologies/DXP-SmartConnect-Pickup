@@ -3,7 +3,7 @@ using DXP.SmartConnectPickup.DataServices.Models;
 
 namespace DXP.SmartConnectPickup.DataServices.Interfaces
 {
-    public interface IStoreServiceRepository : IGenericRepository<StoreService, string>
+    public interface IServiceRepository : IGenericRepository<Service, string>
     {
     }
 }

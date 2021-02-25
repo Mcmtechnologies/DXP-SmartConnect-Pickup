@@ -13,13 +13,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
         [JsonProperty(PropertyName = "event_type")]
         public string EventType { get; set; }
 
-        [JsonProperty(PropertyName = "eta_seconds")]
-        public string EtaSecconds { get; set; }
-
         [JsonProperty(PropertyName = "state")]
         public string State { get; set; }
-
-        [JsonProperty(PropertyName = "customer_state")]
-        public string CustomerState { get; set; }
     }
 }
