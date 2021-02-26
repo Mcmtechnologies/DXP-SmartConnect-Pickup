@@ -58,11 +58,11 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             if (customer != null && !string.IsNullOrEmpty(customer.ExternalId) && isViaMerchant)
             {
                 // Builds pickup adapter
-                IPickupTarget pickupTarget = BuildPickupAdapter(_merchantAccountSettings.PickupProviderDefault);
+                IPickupTarget pickupTarget = PickupHelper.BuildPickupAdapter(_pickupAdapterFactory, _merchantAccountSettings.PickupProviderDefault);
                 BaseRequestObject request = _mapper.Map<GetCustomerRequest>(customer);
                 BaseCustomerResponse response = await pickupTarget.GetCustomerAsync((GetCustomerRequest)request, request.GetCorrelationId());
 
-                await HandleErrorResponse(request, response, TransactionLogStep.GetCustomer);
+                await PickupHelper.HandleErrorResponse(_transactionLogService, request, response, TransactionLogStep.GetCustomer);
 
                 // Set Sync = null when overwrite
                 if (!string.IsNullOrEmpty(response.ExternalId))
@@ -85,7 +85,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>Task{BaseResponseObject}.</returns>
-        public async Task<BaseResponseObject> CreateCustomerAsync(CustomerFlyBuyModel model)
+        public async Task<BaseResponseObject> CreateCustomerAsync(CustomerModel model)
         {
             Guard.AgainstNullOrEmpty(nameof(model.Name), model.Name);
             Guard.AgainstInvalidArgumentWithMessage($"{nameof(model.AgeVerification)} must be accepted", model.AgeVerification ?? false);
@@ -121,7 +121,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>Task{BaseResponseObject}.</returns>
-        public async Task<BaseResponseObject> UpdateCustomerAsync(CustomerFlyBuyModel model)
+        public async Task<BaseResponseObject> UpdateCustomerAsync(CustomerModel model)
         {
             Customer customer = await _customerRepository.GetCustomerByUserIdAndProviderAsync(model.UserId, _merchantAccountSettings.PickupProviderDefault);
 
@@ -169,7 +169,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
                 {
                     Status = false,
                     ErrorCode = response.RequestError != null ? ResponseErrorCode.SystemError : ResponseErrorCode.UnhandleException,
-                    Message = response.Error != null ? JsonConvert.SerializeObject(response.Error) : response.RequestError?.Message,
+                    Message = response.Errors != null ? JsonConvert.SerializeObject(response.Errors) : response.RequestError?.Message,
                     StackTrace = !_applicationSettings.IsProduction ? response.RequestError?.StackTrace : string.Empty
                 };
             }
@@ -208,7 +208,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         private async Task<BaseCustomerResponse> UpdateCustomerMerchantAsync(Customer customer)
         {
             // Builds pickup adapter
-            IPickupTarget pickupTarget = BuildPickupAdapter(_merchantAccountSettings.PickupProviderDefault);
+            IPickupTarget pickupTarget = PickupHelper.BuildPickupAdapter(_pickupAdapterFactory, _merchantAccountSettings.PickupProviderDefault);
 
             TransactionLogStep transactionLogStep;
             BaseCustomerResponse response;
@@ -229,22 +229,9 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             }
 
             await UpdateExternalId(customer, response);
-            await HandleErrorResponse(request, response, transactionLogStep);
+            await PickupHelper.HandleErrorResponse(_transactionLogService, request, response, transactionLogStep);
 
             return response;
-        }
-
-        /// <summary>
-        /// Build Pickup Adapter.
-        /// </summary>
-        /// <param name="pickupProvider">The pickupProvider.</param>
-        /// <returns>IPickupTarget.</returns>
-        public IPickupTarget BuildPickupAdapter(string pickupProvider)
-        {
-            var mechantAccount = new MerchantAccount();
-            mechantAccount.SetMerchantAccountType(pickupProvider);
-            IPickupTarget pickupTarget = _pickupAdapterFactory.BuildPickupAdapter(mechantAccount);
-            return pickupTarget;
         }
 
         private async Task UpdateExternalId<T>(Customer customer, T response) where T : BaseCustomerResponse
@@ -261,19 +248,5 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
                 await _customerRepository.UpdateAndSaveChangesAsync(customer);
             }
         }
-
-        private async Task HandleErrorResponse(BaseRequestObject request, BaseCustomerResponse response, TransactionLogStep transactionLogStep)
-        {
-            if (response.RequestError != null || response.Error != null)
-            {
-                string responseError = response.Error != null ? JsonConvert.SerializeObject(response.Error) : "";
-                string requestData = response.RequestData != null ? JsonConvert.SerializeObject(response.RequestData) : "";
-                string exception = response.RequestError != null ? JsonConvert.SerializeObject(response.RequestError) : "";
-
-                await _transactionLogService.AddTransactionLogAsync(transactionLogStep, TransactionLogStatus.Error, requestData, responseError, response.RequestError?.Message, exception, request.GetCorrelationId());
-            }
-        }
-
-       
     }
 }

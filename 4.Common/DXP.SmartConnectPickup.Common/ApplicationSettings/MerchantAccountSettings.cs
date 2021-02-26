@@ -3,7 +3,9 @@
     public class MerchantAccountSettings
     {
         public string PickupProviderDefault { get; set; }
+        public string PickupTypeDefault { get; set; }
         public int MaxNumberCustomerRetry { get; set; }
+        public int MaxNumberOrderRetry { get; set; }
         public string TokenRetry { get; set; }
         public FlyBuyApi FlyBuy { get; set; }
     }
