@@ -61,7 +61,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         public async Task<BaseResponseObject> GetOrderByOfferApiId(string orderApiId, bool isViaMerchant = false)
         {
             Order order = await _orderRepository.GetOrderByOrderApiIdAsync(orderApiId);
-
+            OrderViewModel orderResponse = new OrderViewModel();
             if (order != null && !string.IsNullOrEmpty(order.ExternalId) && isViaMerchant)
             {
                 // Builds pickup adapter
@@ -76,13 +76,17 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
                 {
                     order.IsSync = null;
                     order.ExternalId = response.ExternalId;
-                    order.ExternalStatus = response.State;
+                    order.ExternalStatus = response.OrderState;
                     order.RedemptionCode = response.RedemptionCode;
                     order.RedemptionUrl = response.RedemptionUrl;
+
+                    orderResponse = _mapper.Map<BaseOrderResponse, OrderViewModel>(response);
                 }
             }
 
-            return ReturnSuccess(_mapper.Map<Order, OrderViewModel>(order));
+            orderResponse = _mapper.Map(order, orderResponse);
+
+            return ReturnSuccess(orderResponse);
         }
 
 
@@ -133,9 +137,12 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
 
             await _orderRepository.AddAndSaveChangesAsync(order);
 
-            await UpdateOrderMerchantAsync(order);
+            BaseOrderResponse response = await UpdateOrderMerchantAsync(order);
 
-            return ReturnSuccess(_mapper.Map<Order, OrderViewModel>(order));
+            OrderViewModel orderResponse = _mapper.Map<BaseOrderResponse, OrderViewModel>(response);
+            orderResponse = _mapper.Map(order, orderResponse);
+
+            return ReturnSuccess(orderResponse);
         }
 
         /// <summary>
@@ -159,9 +166,12 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
 
             await _orderRepository.UpdateAndSaveChangesAsync(order);
 
-            await UpdateOrderMerchantAsync(order);
+            BaseOrderResponse response =  await UpdateOrderMerchantAsync(order);
 
-            return ReturnSuccess(_mapper.Map<Order, OrderViewModel>(order));
+            OrderViewModel orderResponse = _mapper.Map<BaseOrderResponse, OrderViewModel>(response);
+            orderResponse = _mapper.Map(order, orderResponse);
+
+            return ReturnSuccess(orderResponse);
         }
 
         /// <summary>
@@ -245,15 +255,18 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         {
             Guard.AgainstInvalidArgument(nameof(token), token == _merchantAccountSettings.TokenRetry);
 
-            Order Order = await _orderRepository.GetOrderByOrderApiIdAsync(orderApiId);
+            Order order = await _orderRepository.GetOrderByOrderApiIdAsync(orderApiId);
 
-            Guard.AgainstNotFound(nameof(orderApiId), Order);
+            Guard.AgainstNotFound(nameof(orderApiId), order);
 
-            BaseOrderResponse response = await UpdateOrderMerchantAsync(Order);
+            BaseOrderResponse response = await UpdateOrderMerchantAsync(order);
 
             if (!string.IsNullOrEmpty(response.ExternalId))
             {
-                return ReturnSuccess(_mapper.Map<Order, OrderViewModel>(Order));
+                OrderViewModel orderResponse = _mapper.Map<BaseOrderResponse, OrderViewModel>(response);
+                orderResponse = _mapper.Map(order, orderResponse);
+
+                return ReturnSuccess(orderResponse);
             }
             else
             {
@@ -427,7 +440,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             if (!string.IsNullOrEmpty(response.ExternalId))
             {
                 order.ExternalId = response.ExternalId;
-                order.ExternalStatus = response.State.ToString();
+                order.ExternalStatus = response.OrderState.ToString();
                 order.RedemptionCode = response.RedemptionCode;
                 order.RedemptionUrl = response.RedemptionUrl;
                 order.IsSync = true;

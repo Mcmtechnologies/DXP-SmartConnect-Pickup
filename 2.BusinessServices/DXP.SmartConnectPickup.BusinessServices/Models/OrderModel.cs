@@ -21,5 +21,29 @@ namespace DXP.SmartConnectPickup.BusinessServices.Models
         public string PickupWindow { get; set; }
 
         public string PickupType { get; set; }
+
+        // More Infor
+
+        public string CustomerPhone { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string CustomerToken { get; set; }
+
+        public string AppAuthorizationToken { get; set; }
+
+        public string CustomerCarColor { get; set; }
+
+        public string CustomerCarType { get; set; }
+
+        public string CustomerLicensePlate { get; set; }
+
+        public string PartnerIdentifier { get; set; }
+
+        public string PartnerIdentifierForCrew { get; set; }
+
+        public string PartnerIdentifierForCustomer { get; set; }
+
+        public string PushToken { get; set; }
     }
 }
