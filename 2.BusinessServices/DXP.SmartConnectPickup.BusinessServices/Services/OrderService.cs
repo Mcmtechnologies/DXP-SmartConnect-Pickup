@@ -137,12 +137,9 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
 
             await _orderRepository.AddAndSaveChangesAsync(order);
 
-            BaseOrderResponse response = await UpdateOrderMerchantAsync(order);
+            await UpdateOrderMerchantAsync(order);
 
-            OrderViewModel orderResponse = _mapper.Map<BaseOrderResponse, OrderViewModel>(response);
-            orderResponse = _mapper.Map(order, orderResponse);
-
-            return ReturnSuccess(orderResponse);
+            return ReturnSuccess(_mapper.Map<Order, OrderViewModel>(order));
         }
 
         /// <summary>
@@ -164,14 +161,20 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             order.ModifiedDate = DateTime.UtcNow;
             order.IsSync = false;
 
+            // More infor
+            order.CustomerPhone = model.CustomerPhone ?? order.CustomerPhone;
+            order.CustomerName = model.CustomerName ?? order.CustomerName;
+            order.CustomerToken = model.CustomerToken ?? order.CustomerToken;
+            order.AppAuthorizationToken = model.AppAuthorizationToken ?? order.AppAuthorizationToken;
+            order.CustomerCarColor = model.CustomerCarColor ?? order.CustomerCarColor;
+            order.CustomerCarType = model.CustomerCarType ?? order.CustomerCarType;
+            order.CustomerLicensePlate = model.CustomerLicensePlate ?? order.CustomerLicensePlate;
+
             await _orderRepository.UpdateAndSaveChangesAsync(order);
 
-            BaseOrderResponse response =  await UpdateOrderMerchantAsync(order);
+            await UpdateOrderMerchantAsync(order);
 
-            OrderViewModel orderResponse = _mapper.Map<BaseOrderResponse, OrderViewModel>(response);
-            orderResponse = _mapper.Map(order, orderResponse);
-
-            return ReturnSuccess(orderResponse);
+            return ReturnSuccess(_mapper.Map<Order, OrderViewModel>(order));
         }
 
         /// <summary>

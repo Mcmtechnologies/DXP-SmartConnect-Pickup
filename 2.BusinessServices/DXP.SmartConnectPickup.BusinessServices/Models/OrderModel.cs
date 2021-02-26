@@ -38,12 +38,6 @@ namespace DXP.SmartConnectPickup.BusinessServices.Models
 
         public string CustomerLicensePlate { get; set; }
 
-        public string PartnerIdentifier { get; set; }
-
-        public string PartnerIdentifierForCrew { get; set; }
-
-        public string PartnerIdentifierForCustomer { get; set; }
-
         public string PushToken { get; set; }
     }
 }

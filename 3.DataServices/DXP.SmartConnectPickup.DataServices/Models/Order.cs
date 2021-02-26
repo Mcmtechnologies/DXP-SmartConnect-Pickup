@@ -1,7 +1,6 @@
 ﻿using DXP.SmartConnectPickup.Common.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DXP.SmartConnectPickup.DataServices.Models
 {
@@ -42,5 +41,40 @@ namespace DXP.SmartConnectPickup.DataServices.Models
         public DateTime? ModifiedDate { get; set; }
 
         public string ModifiedBy { get; set; }
+
+        // More Infor
+
+        [NotMapped]
+        public string CustomerPhone { get; set; }
+
+        [NotMapped]
+        public string CustomerName { get; set; }
+
+        [NotMapped]
+        public string CustomerToken { get; set; }
+
+        [NotMapped]
+        public string AppAuthorizationToken { get; set; }
+
+        [NotMapped]
+        public string CustomerCarColor { get; set; }
+
+        [NotMapped]
+        public string CustomerCarType { get; set; }
+
+        [NotMapped]
+        public string CustomerLicensePlate { get; set; }
+
+        [NotMapped]
+        public string PartnerIdentifier { get; set; }
+
+        [NotMapped]
+        public string PartnerIdentifierForCrew { get; set; }
+
+        [NotMapped]
+        public string PartnerIdentifierForCustomer { get; set; }
+
+        [NotMapped]
+        public string PushToken { get; set; }
     }
 }
