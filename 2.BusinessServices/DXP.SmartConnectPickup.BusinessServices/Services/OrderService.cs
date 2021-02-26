@@ -162,13 +162,13 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
             order.IsSync = false;
 
             // More infor
-            order.CustomerCarColor = model.CustomerPhone ?? order.CustomerPhone;
-            order.CustomerCarColor = model.CustomerName ?? order.CustomerName;
-            order.CustomerCarColor = model.CustomerToken ?? order.CustomerToken;
-            order.CustomerCarColor = model.AppAuthorizationToken ?? order.AppAuthorizationToken;
+            order.CustomerPhone = model.CustomerPhone ?? order.CustomerPhone;
+            order.CustomerName = model.CustomerName ?? order.CustomerName;
+            order.CustomerToken = model.CustomerToken ?? order.CustomerToken;
+            order.AppAuthorizationToken = model.AppAuthorizationToken ?? order.AppAuthorizationToken;
             order.CustomerCarColor = model.CustomerCarColor ?? order.CustomerCarColor;
-            order.CustomerCarColor = model.CustomerCarType ?? order.CustomerCarType;
-            order.CustomerCarColor = model.CustomerLicensePlate ?? order.CustomerLicensePlate;
+            order.CustomerCarType = model.CustomerCarType ?? order.CustomerCarType;
+            order.CustomerLicensePlate = model.CustomerLicensePlate ?? order.CustomerLicensePlate;
 
             await _orderRepository.UpdateAndSaveChangesAsync(order);
 
