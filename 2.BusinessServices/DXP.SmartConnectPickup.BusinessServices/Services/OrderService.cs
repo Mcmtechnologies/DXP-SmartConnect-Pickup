@@ -61,7 +61,7 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
         public async Task<BaseResponseObject> GetOrderByOfferApiId(string orderApiId, bool isViaMerchant = false)
         {
             Order order = await _orderRepository.GetOrderByOrderApiIdAsync(orderApiId);
-            OrderViewModel orderResponse = new OrderViewModel();
+            OrderViewModel orderModel = new OrderViewModel();
             if (order != null && !string.IsNullOrEmpty(order.ExternalId) && isViaMerchant)
             {
                 // Builds pickup adapter
@@ -74,19 +74,31 @@ namespace DXP.SmartConnectPickup.BusinessServices.Services
                 // Set Sync = null when overwrite
                 if (!string.IsNullOrEmpty(response.ExternalId))
                 {
-                    order.IsSync = null;
-                    order.ExternalId = response.ExternalId;
-                    order.ExternalStatus = response.OrderState;
-                    order.RedemptionCode = response.RedemptionCode;
-                    order.RedemptionUrl = response.RedemptionUrl;
+                    orderModel = _mapper.Map<BaseOrderResponse, OrderViewModel>(response);
 
-                    orderResponse = _mapper.Map<BaseOrderResponse, OrderViewModel>(response);
+                    orderModel.IsSync = null;
+                    orderModel.Id = order.Id;
+                    orderModel.OrderApiId = order.OrderApiId;
+                    orderModel.Provider = order.Provider;
+                    orderModel.ExternalSiteId = order.ExternalSiteId;
+                    orderModel.DisplayId = order.DisplayId;
+                    orderModel.StoreId = order.StoreId;
+                    orderModel.StoreService = order.StoreService;
+                    orderModel.OrderStatus = order.OrderStatus;
+                    orderModel.CreatedDate = order.CreatedDate;
+                    orderModel.CreatedBy = order.CreatedBy;
+                    orderModel.ModifiedDate = order.ModifiedDate;
+                    orderModel.ModifiedBy = order.ModifiedBy;
+
+                    orderModel.ExternalStatus = response.OrderState;
                 }
+
+                return ReturnSuccess(orderModel);
             }
 
-            orderResponse = _mapper.Map(order, orderResponse);
+            orderModel = _mapper.Map(order, orderModel);
 
-            return ReturnSuccess(orderResponse);
+            return ReturnSuccess(orderModel);
         }
 
 
