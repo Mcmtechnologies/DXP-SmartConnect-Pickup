@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[Customer] (
-    [Id]               NVARCHAR (128) NULL,
+    [Id]               NVARCHAR (128) NOT NULL,
     [UserId]           NVARCHAR (128) NULL,
     [Provider]         NVARCHAR (256) NULL,
-    [ExternalId]       NVARCHAR (128) NULL,
+    [ExternalId]       NVARCHAR (256) NULL,
     [ExternalApiToken] NVARCHAR (256) NULL,
     [Name]             NVARCHAR (256) NULL,
     [Phone]            NVARCHAR (128) NULL,
@@ -13,10 +13,11 @@
     [AgeVerification]  BIT            NULL,
     [IsSync]           BIT            NULL,
     [CreatedDate]      DATETIME       NULL,
-    [CreatedBy]        NVARCHAR (50)  NULL,
-    [ModifiedDate]     DATETIME       NULL,
-    [ModifiedBy]       NVARCHAR (50)  NULL
+    [CreatedBy]        DATETIME       NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 

@@ -53,6 +53,385 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get An Order With A FlyBuy Order Identifer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\""
+							}
+						],
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/orders/30118252",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"30118252"
+							]
+						},
+						"description": "Replace token in the header and order identifier in the GET URL"
+					},
+					"response": []
+				},
+				{
+					"name": "Get An Order With A FlyBuy Order Identifer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\"",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/orders?partner_identifier=12345",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "partner_identifier",
+									"value": "12345"
+								}
+							]
+						},
+						"description": "Replace token in the header and partner identifier in the GET URL"
+					},
+					"response": []
+				},
+				{
+					"name": "Get A List Of All Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\"",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/orders",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Replace token in the header"
+					},
+					"response": []
+				},
+				{
+					"name": "Get A List Of Site",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\""
+							}
+						],
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/sites",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sites"
+							]
+						},
+						"description": "Replace token in the header"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"site_id\": \"982\",\r\n        \"customer_phone\": null,\r\n        \"customer_name\": null,\r\n        \"customer_token\": null,\r\n        \"app_authorization_token\": null,\r\n        \"customer_car_color\": null,\r\n        \"customer_car_type\": null,\r\n        \"customer_license_plate\": null,\r\n        \"partner_identifier\": \"TTO_Order number1\",\r\n        \"partner_identifier_for_crew\": null,\r\n        \"partner_identifier_for_customer\": null,\r\n        \"push_token\": null,\r\n        \"pickup_window\": \"2021-04-25T17:57:34Z\",\r\n        \"pickup_type\": \"curbside\",\r\n        \"state\": \"created\"\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/orders",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						},
+						"description": "Replace token in the header"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"site_id\": \"982\",\r\n        \"customer_phone\": null,\r\n        \"customer_name\": null,\r\n        \"customer_token\": null,\r\n        \"app_authorization_token\": null,\r\n        \"customer_car_color\": null,\r\n        \"customer_car_type\": null,\r\n        \"customer_license_plate\": null,\r\n        \"partner_identifier\": \"TTO_Order number1\",\r\n        \"pickup_type\": \"curbside\",\r\n        \"state\": \"ready\"\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/orders/29968056",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"29968056"
+							]
+						},
+						"description": "Replace token in the header"
+					},
+					"response": []
+				},
+				{
+					"name": "Change State Event Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"order_id\": \"30118252\",\r\n        \"event_type\": \"state_change\",\r\n        \"state\": \"ready\"\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/events",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events"
+							]
+						},
+						"description": "Replace token in the header"
+					},
+					"response": []
+				},
+				{
+					"name": "Customer Rating Event order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"order_id\": \"30118252\",\r\n        \"event_type\": \"customer_rating\",\r\n        \"customer_rating_value\": \"5\",\r\n        \"customer_rating_comments\":\" ngon good good!\"\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/events",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events"
+							]
+						},
+						"description": "Replace token in the header"
+					},
+					"response": []
+				},
+				{
+					"name": "Set Location Customer Event Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Token token=\"A0AB11F60B734D1985EE6B1FA4ED5599.5C7HDdDg10q7qRKiqKQDbZ_5gwFTCLTfGa4DC4WfrYfd1Oy2Gzt3t_6mF1m_kJVEi7qzavvm\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"order_id\": \"29966964\",\r\n        \"event_type\": \"location_update\",\r\n        \"longitude\": -77.0650202035904,\r\n        \"latitude\": 38.903783196923044,\r\n        \"accuracy\": 8,\r\n        \"speed\": 0.5\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "https://flybuy.radiusnetworks.com/api/v1/events",
+							"protocol": "https",
+							"host": [
+								"flybuy",
+								"radiusnetworks",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events"
+							]
+						},
+						"description": "Replace token in the header"
+					},
+					"response": []
 				}
 			]
 		},
@@ -75,10 +454,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"string\",\r\n    \"externalApiToken\": \"string\",\r\n    \"userId\": \"3C89C53B-02D1-fffff-AECE-E9bcaacca3\",\r\n    \"name\": \"fasdf\",\r\n    \"phone\": \"212-200-0555\",\r\n    \"carColor\": \"string\",\r\n    \"carType\": \"string\",\r\n    \"lisensePlate\": \"string\",\r\n    \"termsOfService\": null,\r\n    \"ageVerification\": true\r\n}"
+							"raw": "{\r\n    \"id\": \"143412\",\r\n    \"externalApiToken\": \"string\",\r\n    \"userId\": \"3C89C53B-02D1-fffff-AECE-E9bcaacca3\",\r\n    \"name\": \"fasdf\",\r\n    \"phone\": \"212-200-0555\",\r\n    \"carColor\": \"string\",\r\n    \"carType\": \"string\",\r\n    \"lisensePlate\": \"string\",\r\n    \"termsOfService\": true,\r\n    \"ageVerification\": true\r\n}"
 						},
 						"url": {
-							"raw": "https://localhost:44320/api/Customer",
+							"raw": "https://localhost:44320/api/Customer/createcustomer",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -86,7 +465,8 @@
 							"port": "44320",
 							"path": [
 								"api",
-								"Customer"
+								"Customer",
+								"createcustomer"
 							]
 						}
 					},
@@ -136,7 +516,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://localhost:44320/api/Customer?userId=416EB642-4286-4555-8020-CCD42C8F841E&isViaMerchant=true",
+							"raw": "https://localhost:44320/api/Customer/getcustomerbyuserid?userId=3C89C53B-02D1-fffff-AECE-E9bcaacca3&isViaMerchant=false",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -144,16 +524,17 @@
 							"port": "44320",
 							"path": [
 								"api",
-								"Customer"
+								"Customer",
+								"getcustomerbyuserid"
 							],
 							"query": [
 								{
 									"key": "userId",
-									"value": "416EB642-4286-4555-8020-CCD42C8F841E"
+									"value": "3C89C53B-02D1-fffff-AECE-E9bcaacca3"
 								},
 								{
 									"key": "isViaMerchant",
-									"value": "true"
+									"value": "false"
 								}
 							]
 						}
@@ -231,6 +612,244 @@
 									"key": "skipIndex",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order by OrderApi Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44320/api/Order/getorderbyofferapiid?orderApiId=aaabbbccc_d&isViaMerchant=true",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Order",
+								"getorderbyofferapiid"
+							],
+							"query": [
+								{
+									"key": "orderApiId",
+									"value": "aaabbbccc_d"
+								},
+								{
+									"key": "isViaMerchant",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderApiId\": \"aaabbbccc_d\",\r\n    \"orderNumber\": \"Order Number Dev Test\",\r\n    \"ServiceId\": \"5\",\r\n    \"storeId\": \"1\",\r\n    \"storeCode\": \"550\",\r\n    \"orderStatus\": \"New\",\r\n    \"pickupWindow\": \"2021-04-25T17:57:34Z\",\r\n    \"customername\":\"abc1\",\r\n    \"customercartype\":\"Mer1\",\r\n    \"customercarcolor\":\"Rec1\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44320/api/Order/createorder",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Order",
+								"createorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderApiId\": \"123456\",\r\n    \"orderStatus\": \"Ready\",\r\n    \"pickupWindow\": \"2021-03-25T17:57:34.603Z\",\r\n    \"customername\":\"abc\",\r\n    \"customercartype\":\"Mer\",\r\n    \"customercarcolor\":\"Rec\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44320/api/Order/updateorder",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Order",
+								"updateorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change State Order Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"orderApiId\":\"123456\",\"orderStatus\":\"Cancelled\"}"
+						},
+						"url": {
+							"raw": "https://localhost:44320/api/Order/changestateorderevent",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Order",
+								"changestateorderevent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Site by StoreApi Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44320/api/Site/getSitebyStoreApiId?storeApiId=1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Site",
+								"getSitebyStoreApiId"
+							],
+							"query": [
+								{
+									"key": "storeApiId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Site",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"storeApiId\": \"2\",\r\n    \"storeCode\": \"20\",\r\n    \"externalSiteId\": \"123\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44320/api/Site/createSite",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Site",
+								"createSite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Site",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"storeApiId\":\"2\",\"storeCode\":\"30\",\"externalSiteId\":\"425\"}"
+						},
+						"url": {
+							"raw": "https://localhost:44320/api/Site/updateSite",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44320",
+							"path": [
+								"api",
+								"Site",
+								"updateSite"
 							]
 						}
 					},

@@ -6,10 +6,13 @@
         CustomExceptionHandlerMiddleware = 1,
         BaseApiControllerExceptionHandling =2,
 
-        // Customer
+        // Systerm
         GetCustomer = 10,
         CreateCustomer = 11,
         UpdateCustomer = 12,
+        GetOrder = 15,
+        CreateOrder = 16,
+        UpdateOrder = 17,
 
         // FlyBuy
         FlyBuyGetCustomer = 20,

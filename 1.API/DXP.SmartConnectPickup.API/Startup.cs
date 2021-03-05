@@ -1,7 +1,6 @@
 using DXP.SmartConnectPickup.API.Middlewares;
 using DXP.SmartConnectPickup.BusinessServices.Common;
 using DXP.SmartConnectPickup.BusinessServices.Interfaces;
-using DXP.SmartConnectPickup.BusinessServices.Models;
 using DXP.SmartConnectPickup.BusinessServices.PickupProcessing;
 using DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters;
 using DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyBuy;
@@ -100,11 +99,19 @@ namespace DXP.SmartConnectPickup.API
             // Service and Repos
             services.AddScoped<ISettingRepository, SettingRepository>();
             services.AddScoped<ISettingService, SettingService>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IService_Service, Service_Service>();
             services.AddScoped<ITransactionLogRepository, TransactionLogRepository>();
             services.AddScoped<ITransactionLogService, TransactionLogService>();
             services.AddScoped<ICachingWorkerService, CachingWorkerService>();
+            services.AddScoped<ISiteRepository, SiteRepository>();
+            services.AddScoped<ISiteService, SiteService>();
+
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();
+
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
 
             // Use IHttpClientFactory to implement resilient HTTP requests
             // https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
@@ -255,11 +262,19 @@ namespace DXP.SmartConnectPickup.API
 
         private void AddMapperConfigurations(TypeAdapterConfig config)
         {
+            // Customer
             config.NewConfig<Customer, CreateCustomerRequest>();
 
             config.NewConfig<Customer, UpdateCustomerRequest>();
 
             config.NewConfig<Customer, GetCustomerRequest>();
+
+            // Order
+            config.NewConfig<Order, CreateOrderRequest>()
+                .Map(dest => dest.SiteId, src => src.ExternalSiteId);
+
+            config.NewConfig<Order, UpdateOrderRequest>()
+                 .Map(dest => dest.SiteId, src => src.ExternalSiteId);
 
             // Flybuy config
             FlyBuyAddMapperConfig(config);
@@ -267,27 +282,39 @@ namespace DXP.SmartConnectPickup.API
 
         private static void FlyBuyAddMapperConfig(TypeAdapterConfig config)
         {
-            // view model
-            config.NewConfig<Customer, CustomerFlyBuyViewModel>()
-                .Map(dest => dest.Id, src => src.ExternalId)
-                .Map(dest => dest.ApiToken, src => src.ExternalApiToken)
-                .Map(dest => dest.PartnerIdentifier, src => src.Id);
-
-            // request 
+            // request Customer
             config.NewConfig<CreateCustomerRequest, FlyBuyCustomerRequestData>()
-                  .Map(dest => dest.PartnerIdentifier, scr => scr.Id);
+                  .Map(dest => dest.PartnerIdentifier, src => src.UserId);
 
             config.NewConfig<UpdateCustomerRequest, FlyBuyCustomerRequestData>()
-                 .Map(dest => dest.PartnerIdentifier, scr => scr.Id);
+                 .Map(dest => dest.PartnerIdentifier, src => src.UserId);
 
-            // response
+            // response Customer
             config.NewConfig<FlyBuyCustomerResponseData, BaseCustomerResponse>()
-                .Map(dest => dest.Id, src => src.PartnerIdentifier)
+                .Map(dest => dest.UserId, src => src.PartnerIdentifier)
                 .Map(dest => dest.ExternalId, src => src.Id)
                 .Map(dest => dest.ExternalApiToken, src => src.ApiToken)
                 .Include<FlyBuyCustomerResponseData, CreateCustomerResponse>()
                 .Include<FlyBuyCustomerResponseData, UpdateCustomerResponse>()
                 .Include<FlyBuyCustomerResponseData, GetCustomerResponse>();
+
+            // request Order
+            config.NewConfig<CreateOrderRequest, FlyBuyOrderRequestData>()
+                  .Map(dest => dest.PartnerIdentifier, src => src.DisplayId);
+
+            config.NewConfig<UpdateOrderRequest, FlyBuyOrderRequestData>()
+                 .Map(dest => dest.PartnerIdentifier, src => src.DisplayId);
+
+            config.NewConfig<ChangeStateOrderRequest, FlyBuyOrderEventStateChangeRequestData>()
+                .Map(dest => dest.OrderId, src => src.ExternalId);
+
+            // response Order
+            config.NewConfig<FlyBuyOrderResponseData, BaseOrderResponse>()
+                .Map(dest => dest.OrderDisplayId, src => src.PartnerIdentifier)
+                .Map(dest => dest.ExternalId, src => src.Id)
+                .Include<FlyBuyOrderResponseData, CreateOrderResponse>()
+                .Include<FlyBuyOrderResponseData, UpdateOrderResponse>()
+                .Include<FlyBuyOrderResponseData, GetOrderResponse>();
         }
     }
 }

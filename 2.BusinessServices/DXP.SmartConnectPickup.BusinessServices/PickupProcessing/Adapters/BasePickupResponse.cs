@@ -16,6 +16,8 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters
 
         public Exception RequestError { get; set; }
 
+        public object Errors { get; set; }
+
         public object Error { get; set; }
     }
 }

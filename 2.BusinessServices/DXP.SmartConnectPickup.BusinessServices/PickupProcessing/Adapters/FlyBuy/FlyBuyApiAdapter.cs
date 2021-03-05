@@ -130,14 +130,155 @@ namespace DXP.SmartConnectPickup.BusinessServices.PickupProcessing.Adapters.FlyB
             return customer;
         }
 
-        private static void MappingBaseResponse(FlyBuyResponseBase flyBuyResponse, BaseCustomerResponse customer)
+        /// <summary>
+        /// Gets Order Async.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="correlationId">The correlationId.</param>
+        /// <returns>Task{GetOrderResponse}.</returns>
+        public async Task<GetOrderResponse> GetOrderAsync(GetOrderRequest request, Guid correlationId)
         {
-            customer.Error = flyBuyResponse.Error;
-            customer.RequestData = flyBuyResponse.RequestData;
-            customer.RequestError = flyBuyResponse.RequestError;
-            customer.RequestHeaders = flyBuyResponse.RequestHeaders;
-            customer.RequestUrl = flyBuyResponse.RequestUrl;
-            customer.Response = flyBuyResponse.Response;
+            return await GetOrderAsync(request, correlationId.ToString());
         }
+
+        /// <summary>
+        /// Gets Order Async.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="correlationId">The correlationId.</param>
+        /// <returns>Task{GetOrderResponse}.</returns>
+        public async Task<GetOrderResponse> GetOrderAsync(GetOrderRequest request, string correlationId)
+        {
+            var flyBuyRequest = new FlyBuyGetOrderRequest()
+            {
+                Id = request.ExternalId
+            };
+
+            FlyBuyGetOrderResponse flyBuyResponse = await _flyBuyApiAdaptee.GetOrderAsync(flyBuyRequest, correlationId);
+
+            var Order = _mapper.Map<GetOrderResponse>(flyBuyResponse.Data);
+            if (Order == null)
+            {
+                Order = new GetOrderResponse();
+            }
+
+            MappingBaseResponse(flyBuyResponse, Order);
+
+            return Order;
+        }
+
+        /// <summary>
+        /// Creates Order Async.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="correlationId">The correlationId.</param>
+        /// <returns>Task{CreateOrderResponse}.</returns>
+        public async Task<CreateOrderResponse> CreateOrderAsync(CreateOrderRequest request, Guid correlationId)
+        {
+            return await CreateOrderAsync(request, correlationId.ToString());
+        }
+
+        /// <summary>
+        /// Creates Order Async.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="correlationId">The correlationId.</param>
+        /// <returns>Task{CreateOrderResponse}.</returns>
+        public async Task<CreateOrderResponse> CreateOrderAsync(CreateOrderRequest request, string correlationId)
+        {
+            var flyBuyRequest = new FlyBuyCreateOrderRequest()
+            {
+                Data = _mapper.Map<FlyBuyOrderRequestData>(request)
+            };
+
+            FlyBuyCreateOrderResponse flyBuyResponse = await _flyBuyApiAdaptee.CreateOrderAsync(flyBuyRequest, correlationId);
+
+            var Order = _mapper.Map<CreateOrderResponse>(flyBuyResponse.Data);
+            if (Order == null)
+            {
+                Order = new CreateOrderResponse();
+            }
+
+            MappingBaseResponse(flyBuyResponse, Order);
+
+            return Order;
+        }
+
+        /// <summary>
+        /// Update Order Async.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="correlationId">The correlationId.</param>
+        /// <returns>Task{UpdateOrderResponse}.</returns>
+        public async Task<UpdateOrderResponse> UpdateOrderAsync(UpdateOrderRequest request, Guid correlationId)
+        {
+            return await UpdateOrderAsync(request, correlationId.ToString());
+        }
+
+        /// <summary>
+        /// Update Order Async.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="correlationId">The correlationId.</param>
+        /// <returns>Task{UpdateOrderResponse}.</returns>
+        public async Task<UpdateOrderResponse> UpdateOrderAsync(UpdateOrderRequest request, string correlationId)
+        {
+
+            var flyBuyRequest = new FlyBuyUpdateOrderRequest()
+            {
+                Id = request.ExternalId,
+                Data = _mapper.Map<FlyBuyOrderRequestData>(request)
+            };
+
+            FlyBuyUpdateOrderResponse flyBuyResponse = await _flyBuyApiAdaptee.UpdateOrderAsync(flyBuyRequest, correlationId);
+
+            var Order = _mapper.Map<UpdateOrderResponse>(flyBuyResponse.Data);
+
+            if (Order == null)
+            {
+                Order = new UpdateOrderResponse();
+            }
+
+            MappingBaseResponse(flyBuyResponse, Order);
+
+            return Order;
+        }
+
+        public async Task<ChangeStateOrderResponse> ChangeStateOrder(ChangeStateOrderRequest request, Guid correlationId)
+        {
+            return await ChangeStateOrder(request, correlationId.ToString());
+        }
+
+        public async Task<ChangeStateOrderResponse> ChangeStateOrder(ChangeStateOrderRequest request, string correlationId)
+        {
+            var flyBuyRequest = new FlyBuyChangeStateOrderRequest()
+            {
+                Data = _mapper.Map<FlyBuyOrderEventStateChangeRequestData>(request)
+            };
+
+            FlyBuyChangeStateOrderResponse flyBuyResponse = await _flyBuyApiAdaptee.ChangeStateOrder(flyBuyRequest, correlationId);
+
+            var response = new ChangeStateOrderResponse()
+            {
+                IsSucess = flyBuyResponse.Errors == null && flyBuyResponse.Error == null 
+                    && (flyBuyResponse.Response == null || flyBuyResponse.Response.IsSuccessStatusCode)
+            };
+
+            MappingBaseResponse(flyBuyResponse, response);
+
+            return response;
+        }
+
+        private static void MappingBaseResponse(FlyBuyResponseBase flyBuyResponse, BasePickupResponse pickupResponse)
+        {
+            pickupResponse.Errors = flyBuyResponse.Errors;
+            pickupResponse.Error = flyBuyResponse.Error;
+            pickupResponse.RequestData = flyBuyResponse.RequestData;
+            pickupResponse.RequestError = flyBuyResponse.RequestError;
+            pickupResponse.RequestHeaders = flyBuyResponse.RequestHeaders;
+            pickupResponse.RequestUrl = flyBuyResponse.RequestUrl;
+            pickupResponse.Response = flyBuyResponse.Response;
+        }
+
     }
 }

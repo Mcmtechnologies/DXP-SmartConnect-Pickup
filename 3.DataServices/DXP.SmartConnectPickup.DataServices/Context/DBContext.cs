@@ -14,11 +14,12 @@ namespace DXP.SmartConnectPickup.DataServices.Context
         {
         }
 
-
         public virtual DbSet<TransactionLog> TransactionLog { get; set; }
-
         public virtual DbSet<Setting> Setting { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
+        public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<Site> Site { get; set; }
+        public virtual DbSet<Service> Service { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,11 +29,13 @@ namespace DXP.SmartConnectPickup.DataServices.Context
 
                 entity.Property(e => e.Id).HasMaxLength(128);
 
+                entity.HasKey(e => e.Id).HasName("PK_Customer");
+
                 entity.Property(e => e.UserId).HasMaxLength(128);
 
                 entity.Property(e => e.Provider).HasMaxLength(256);
 
-                entity.Property(e => e.ExternalId).HasMaxLength(128);
+                entity.Property(e => e.ExternalId).HasMaxLength(256);
 
                 entity.Property(e => e.ExternalApiToken).HasMaxLength(256);
 
@@ -53,9 +56,93 @@ namespace DXP.SmartConnectPickup.DataServices.Context
                 entity.Property(e => e.ModifiedBy).HasMaxLength(50);
             });
 
+            modelBuilder.Entity<Site>(entity =>
+            {
+                entity.ToTable("Site");
+
+                entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.HasKey(e => e.Id).HasName("PK_Site");
+
+                entity.Property(e => e.Provider).HasMaxLength(256);
+
+                entity.Property(e => e.ExternalId).HasMaxLength(256);
+
+                entity.Property(e => e.StoreId).HasMaxLength(128);
+
+                entity.Property(e => e.StoreCode).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifiedBy).HasMaxLength(50);
+
+            });
+
+            modelBuilder.Entity<Service>(entity =>
+            {
+                entity.ToTable("Service");
+
+                entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.HasKey(e => e.Id).HasName("PK_Service");
+
+                entity.Property(e => e.ServiceName).HasMaxLength(200);
+
+                entity.Property(e => e.ServiceShortName).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("Order");
+
+                entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.HasKey(e => e.Id).HasName("PK_Order");
+
+                entity.Property(e => e.OrderApiId).HasMaxLength(128);
+
+                entity.Property(e => e.Provider).HasMaxLength(256);
+
+                entity.Property(e => e.ExternalId).HasMaxLength(256);
+
+                entity.Property(e => e.ExternalStatus).HasMaxLength(50);
+
+                entity.Property(e => e.RedemptionCode).HasMaxLength(100);
+
+                entity.Property(e => e.RedemptionUrl).HasMaxLength(500);
+
+                entity.Property(e => e.ExternalSiteId).HasMaxLength(256);
+
+                entity.Property(e => e.PickupWindow).HasMaxLength(200);
+
+                entity.Property(e => e.PickupType).HasMaxLength(50);
+
+                entity.Property(e => e.DisplayId).HasMaxLength(200);
+
+                entity.Property(e => e.StoreService).HasMaxLength(50);
+
+                entity.Property(e => e.StoreId).HasMaxLength(128);
+
+                entity.Property(e => e.OrderStatus).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifiedBy).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<Setting>(entity =>
             {
                 entity.ToTable("Setting");
+
+                entity.HasKey(e => e.Id).HasName("PK_Setting");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(50);
 

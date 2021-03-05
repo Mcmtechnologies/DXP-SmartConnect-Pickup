@@ -41,7 +41,7 @@ namespace DXP.SmartConnectPickup.API.Controllers
         /// <param name="model">The model.</param>
         /// <returns>BaseResponseObject.</returns>
         [HttpPost("createcustomer")]
-        public async Task<BaseResponseObject> CreateCustomer(CustomerFlyBuyModel model)
+        public async Task<BaseResponseObject> CreateCustomer(CustomerModel model)
         {
             return await _customerService.CreateCustomerAsync(model);
         }
@@ -52,7 +52,7 @@ namespace DXP.SmartConnectPickup.API.Controllers
         /// <param name="model">The model.</param>
         /// <returns>BaseResponseObject.</returns>
         [HttpPut("updatecustomer")]
-        public async Task<BaseResponseObject> UpdateCustomer(CustomerFlyBuyModel model)
+        public async Task<BaseResponseObject> UpdateCustomer(CustomerModel model)
         {
             return await _customerService.UpdateCustomerAsync(model);
         }
