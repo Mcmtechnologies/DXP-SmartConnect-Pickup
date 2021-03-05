@@ -315,8 +315,6 @@ namespace DXP.SmartConnectPickup.API
                 .Include<FlyBuyOrderResponseData, CreateOrderResponse>()
                 .Include<FlyBuyOrderResponseData, UpdateOrderResponse>()
                 .Include<FlyBuyOrderResponseData, GetOrderResponse>();
-
-
         }
     }
 }
